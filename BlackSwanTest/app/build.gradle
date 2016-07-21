@@ -30,4 +30,5 @@ dependencies {
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:percent:23.4.0'
     compile 'com.google.code.gson:gson:2.7'
+    compile 'com.koushikdutta.ion:ion:2.1.8'
 }

@@ -44,6 +44,7 @@ public class MovieTilesAdapter extends RecyclerView.Adapter<MovieTilesAdapter.Vi
     @Override
     public void onBindViewHolder(Viewholder holder, int position) {
         ((TextView)holder.tile.findViewById(R.id.movie_title)).setText(movieList.get(position).getTitle());
+        ((TextView)holder.tile.findViewById(R.id.movie_subtitle)).setText(movieList.get(position).getOriginalLanguage());
     }
 
     @Override
