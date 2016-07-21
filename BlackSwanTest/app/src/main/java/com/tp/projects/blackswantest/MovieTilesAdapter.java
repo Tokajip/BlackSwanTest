@@ -5,7 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +48,13 @@ public class MovieTilesAdapter extends RecyclerView.Adapter<MovieTilesAdapter.Vi
     public void onBindViewHolder(Viewholder holder, int position) {
         ((TextView)holder.tile.findViewById(R.id.movie_title)).setText(movieList.get(position).getTitle());
         ((TextView)holder.tile.findViewById(R.id.movie_subtitle)).setText(movieList.get(position).getOriginalLanguage());
+
+
+        Picasso.with(ctx)
+                .load(movieList.get(position).getPosterPath())
+                .placeholder(R.mipmap.ic_launcher)
+                .into((ImageView) holder.tile.findViewById(R.id.movie_image));
+
     }
 
     @Override

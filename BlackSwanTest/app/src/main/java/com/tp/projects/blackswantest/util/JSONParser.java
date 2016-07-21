@@ -3,6 +3,10 @@ package com.tp.projects.blackswantest.util;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,7 +42,11 @@ public class JSONParser {
         return data;
     }
 
-    public static Object returnParsedClass(Class cls, String data){
-        return gson.toJson(data,cls);
+    public static Object returnParsedClass(JsonElement data, Class cls){
+        return gson.fromJson(data,cls);
+    }
+
+    public static Object returnParsedClass(String data, Class cls){
+        return gson.fromJson(data,cls);
     }
 }

@@ -2,6 +2,7 @@ package com.tp.projects.blackswantest;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.tp.projects.blackswantest.util.NetworkHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -251,4 +252,7 @@ public class MovieTile {
         this.voteAverage = voteAverage;
     }
 
+    public void setImageURLs() {
+        posterPath = NetworkHandler.createImageURL(posterPath);
+    }
 }

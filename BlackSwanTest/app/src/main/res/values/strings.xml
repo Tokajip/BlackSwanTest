@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">BlackSwanTest</string>
     <string name="action_settings">Settings</string>
+
+    <string name="base_url">http://api.themoviedb.org/3/</string>
+    <string name="api_key">0a08e38b874d0aa2d426ffc04357069d</string>
 </resources>
