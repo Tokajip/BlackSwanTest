@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
         JsonArray jsonList = result.getAsJsonArray("results");
         for (JsonElement movieJSON : jsonList) {
             MovieTile movie = (MovieTile) JSONParser.returnParsedClass(movieJSON, MovieTile.class);
+            movie.setImageURLs();
             list.add(movie);
-
         }
     }
 

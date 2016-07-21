@@ -51,7 +51,7 @@ public class MovieTilesAdapter extends RecyclerView.Adapter<MovieTilesAdapter.Vi
 
 
         Picasso.with(ctx)
-                .load()
+                .load(movieList.get(position).getPosterPath())
                 .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) holder.tile.findViewById(R.id.movie_image));
 

@@ -21,7 +21,8 @@ public class MainApplication extends Application {
         NetworkHandler.downloadConfig(this, new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
-                NetworkHandler.initializeMovieDB();
+                if(e == null && result.get("status_code") == null)
+                NetworkHandler.initializeMovieDB(result.get("images").getAsJsonObject().get("base_url").getAsString());
             }
         });
     }
