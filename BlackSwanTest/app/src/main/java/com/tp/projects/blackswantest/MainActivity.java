@@ -12,7 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.tp.projects.blackswantest.util.JSONParser;
+import com.tp.projects.blackswantest.util.MovieDBResponseHandler;
+import com.tp.projects.blackswantest.util.NetworkHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +25,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     Context ctx;
+    private List<MovieTile> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +33,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ctx = this;
+        movieDataResponseHandler = cretateMovieDBResponseHandler();
+        NetworkHandler.downloadMovieData(ctx, movieDataResponseHandler);
 
-        initializeTileLayout();
-
+        /*JsonParser parser = new JsonParser();
+        parseMovieJSONData(parser.parse(JSONParser.readStream("moviesArray.txt",ctx)).getAsJsonObject());
+        initializeTileLayout();*/
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,12 +54,48 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    MovieDBResponseHandler movieDataResponseHandler;
+
+    private MovieDBResponseHandler cretateMovieDBResponseHandler() {
+        return new MovieDBResponseHandler(ctx) {
+            @Override
+            public void onCompleted(Exception e, JsonObject result) {
+                super.onCompleted(e, result);
+                if (e == null) {
+                    parseMovieJSONData(result);
+                    initializeTileLayout();
+                }
+            }
+        };
+
+    }
+
+
+    private void parseMovieJSONData(JsonObject result) {
+        list = new ArrayList<>();
+        JsonArray jsonList = result.getAsJsonArray("results");
+        for (JsonElement movieJSON : jsonList) {
+            MovieTile movie = (MovieTile) JSONParser.returnParsedClass(movieJSON, MovieTile.class);
+            list.add(movie);
+
+        }
+    }
 
     private void initializeTileLayout() {
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.movie_tiles_container);
+        if (recyclerView != null) {
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(new MovieTilesAdapter(ctx, list));
+        }
+    }
+
+
+    private void initializeTileLayoutOffline() {
         List<MovieTile> list = new ArrayList<MovieTile>();
         MovieTile movie;
         String data = JSONParser.readStream("sampleMovieJSON.txt", ctx);
-        movie = (MovieTile) JSONParser.returnParsedClass(MovieTile.class, data);
+        movie = (MovieTile) JSONParser.returnParsedClass(data, MovieTile.class);
         list.add(movie);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.movie_tiles_container);
