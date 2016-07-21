@@ -15,7 +15,8 @@ public class NetworkHandler {
     private static String baseURL;
     private static String apiKey;
     private static String imageBaseUrl;
-    private static String imageWidth = "w154";
+    private static String tileImageWidth = "w154";
+    private static String headerImageWidth = "w300";
 
     public static String getBaseURL() {
         return baseURL;
@@ -29,10 +30,13 @@ public class NetworkHandler {
         return baseURL + path + "?api_key=" + apiKey;
     }
 
-    public static String createImageURL(String path) {
-        return imageBaseUrl+imageWidth+path;
+    public static String createTileImageURL(String path) {
+        return imageBaseUrl + tileImageWidth + path;
     }
 
+    public static String createHeaderImageURL(String path) {
+        return imageBaseUrl + headerImageWidth + path;
+    }
     public static void initialize(Context context) {
         baseURL = context.getString(R.string.base_url);
         apiKey = context.getString(R.string.api_key);

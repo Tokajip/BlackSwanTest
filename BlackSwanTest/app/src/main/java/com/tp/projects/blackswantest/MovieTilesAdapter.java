@@ -1,6 +1,7 @@
 package com.tp.projects.blackswantest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ public class MovieTilesAdapter extends RecyclerView.Adapter<MovieTilesAdapter.Vi
     public static class Viewholder extends RecyclerView.ViewHolder {
 
         View tile;
+
         public Viewholder(View itemView) {
             super(itemView);
             tile = itemView;
@@ -45,10 +47,18 @@ public class MovieTilesAdapter extends RecyclerView.Adapter<MovieTilesAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(Viewholder holder, int position) {
-        ((TextView)holder.tile.findViewById(R.id.movie_title)).setText(movieList.get(position).getTitle());
-        ((TextView)holder.tile.findViewById(R.id.movie_subtitle)).setText(movieList.get(position).getOriginalLanguage());
-
+    public void onBindViewHolder(Viewholder holder, final int position) {
+        ((TextView) holder.tile.findViewById(R.id.movie_title)).setText(movieList.get(position).getTitle());
+        ((TextView) holder.tile.findViewById(R.id.movie_popularity)).setText(String.valueOf(movieList.get(position).getPopularity()));
+        ((TextView) holder.tile.findViewById(R.id.movie_description)).setText(movieList.get(position).getOverview());
+        holder.tile.findViewById(R.id.more_info).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ctx, MovieDetailsActivity.class);
+                intent.putExtra("movie",movieList.get(position));
+                ctx.startActivity(intent);
+            }
+        });
 
         Picasso.with(ctx)
                 .load(movieList.get(position).getPosterPath())
