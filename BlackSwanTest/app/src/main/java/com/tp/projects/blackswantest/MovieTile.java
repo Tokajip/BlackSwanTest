@@ -4,13 +4,14 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tp.projects.blackswantest.util.NetworkHandler;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Tokaji Peter on 21/07/16.
  */
-public class MovieTile {
+public class MovieTile implements Serializable{
 
 
     @SerializedName("poster_path")
@@ -253,6 +254,6 @@ public class MovieTile {
     }
 
     public void setImageURLs() {
-        posterPath = NetworkHandler.createImageURL(posterPath);
+        posterPath = NetworkHandler.createTileImageURL(posterPath);
     }
 }

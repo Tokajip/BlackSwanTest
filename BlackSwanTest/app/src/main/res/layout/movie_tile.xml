@@ -23,16 +23,26 @@
         android:text="Test movie title"
         app:layout_widthPercent="50%" />
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_heightPercent="8%"
+        app:layout_widthPercent="8%"
+        android:layout_below="@id/movie_title"
+        android:layout_toEndOf="@id/movie_image"
+        android:id="@+id/movie_star_icon"
+        android:src="@drawable/ic_star_black_18dp"
+        />
     <TextView
         android:id="@+id/movie_popularity"
         style="@style/movie_popularity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/movie_title"
-        android:layout_toEndOf="@id/movie_image"
+        android:layout_toEndOf="@id/movie_star_icon"
         android:text="Test movie subtitle"
         app:layout_heightPercent="8%"
-        app:layout_widthPercent="50%" />
+        app:layout_widthPercent="42%" />
 
     <TextView
         android:id="@+id/movie_description"
