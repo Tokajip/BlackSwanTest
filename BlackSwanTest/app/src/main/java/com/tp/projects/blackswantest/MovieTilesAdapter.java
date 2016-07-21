@@ -21,6 +21,7 @@ public class MovieTilesAdapter extends RecyclerView.Adapter<MovieTilesAdapter.Vi
     public static class Viewholder extends RecyclerView.ViewHolder {
 
         View tile;
+
         public Viewholder(View itemView) {
             super(itemView);
             tile = itemView;
@@ -46,9 +47,10 @@ public class MovieTilesAdapter extends RecyclerView.Adapter<MovieTilesAdapter.Vi
 
     @Override
     public void onBindViewHolder(Viewholder holder, int position) {
-        ((TextView)holder.tile.findViewById(R.id.movie_title)).setText(movieList.get(position).getTitle());
-        ((TextView)holder.tile.findViewById(R.id.movie_subtitle)).setText(movieList.get(position).getOriginalLanguage());
-
+        ((TextView) holder.tile.findViewById(R.id.movie_title)).setText(movieList.get(position).getTitle());
+        ((TextView) holder.tile.findViewById(R.id.movie_popularity)).setText(String.valueOf(movieList.get(position).getPopularity()));
+        ((TextView) holder.tile.findViewById(R.id.movie_description)).setText(movieList.get(position).getOverview());
+        holder.tile.findViewById(R.id.more_info).setTag(position);
 
         Picasso.with(ctx)
                 .load(movieList.get(position).getPosterPath())
