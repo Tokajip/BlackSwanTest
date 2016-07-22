@@ -9,11 +9,11 @@ import com.koushikdutta.async.future.FutureCallback;
 /**
  * Created by Peti on 2016. 07. 21..
  */
-public class MovieDBResponseHandler implements FutureCallback<JsonObject> {
+public class DBResponseHandler implements FutureCallback<JsonObject> {
 
     Context ctx;
 
-    public MovieDBResponseHandler(Context context) {
+    public DBResponseHandler(Context context) {
         ctx = context;
     }
 

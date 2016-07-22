@@ -20,13 +20,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MovieDetailsActivity"
+            android:name=".movies.MovieDetailsActivity"
             android:label="@string/title_activity_movie_details"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".MovieActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".tvshows.TVShowDetailsActivity"></activity>
     </application>
 
 </manifest>

@@ -37,6 +37,7 @@ public class NetworkHandler {
     public static String createHeaderImageURL(String path) {
         return imageBaseUrl + headerImageWidth + path;
     }
+
     public static void initialize(Context context) {
         baseURL = context.getString(R.string.base_url);
         apiKey = context.getString(R.string.api_key);
@@ -44,9 +45,16 @@ public class NetworkHandler {
 
     public static void downloadMovieData(Context ctx, FutureCallback<JsonObject> responseHandler) {
         Ion.with(ctx)
-                .load(NetworkHandler.createGETUrl("movie/top_rated"))
+                .load(NetworkHandler.createGETUrl("movie/popular"))
                 .asJsonObject()
                 .setCallback(responseHandler);
+    }
+
+    public static void downloadTvShowData(Context ctx, DBResponseHandler tvshowDataResponseHandler) {
+        Ion.with(ctx)
+                .load(NetworkHandler.createGETUrl("tv/popular"))
+                .asJsonObject()
+                .setCallback(tvshowDataResponseHandler);
     }
 
     public static void downloadConfig(Context ctx, FutureCallback<JsonObject> responseHandler) {
@@ -59,5 +67,6 @@ public class NetworkHandler {
     public static void initializeMovieDB(String url) {
         imageBaseUrl = url;
     }
+
 
 }

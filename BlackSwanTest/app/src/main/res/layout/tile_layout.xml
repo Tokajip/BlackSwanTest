@@ -14,7 +14,7 @@
         app:layout_widthPercent="50%" />
 
     <TextView
-        android:id="@+id/movie_title"
+        android:id="@+id/tile_title"
         style="@style/movie_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,31 +24,31 @@
         app:layout_widthPercent="50%" />
 
     <ImageView
+        android:id="@+id/tile_star_icon"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_heightPercent="8%"
-        app:layout_widthPercent="8%"
-        android:layout_below="@id/movie_title"
+        android:layout_below="@id/tile_title"
         android:layout_toEndOf="@id/movie_image"
-        android:id="@+id/movie_star_icon"
         android:src="@drawable/ic_star_black_18dp"
-        />
+        app:layout_heightPercent="8%"
+        app:layout_widthPercent="8%" />
+
     <TextView
-        android:id="@+id/movie_popularity"
+        android:id="@+id/tile_popularity"
         style="@style/movie_popularity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/movie_title"
-        android:layout_toEndOf="@id/movie_star_icon"
+        android:layout_below="@id/tile_title"
+        android:layout_toEndOf="@id/tile_star_icon"
         android:text="Test movie subtitle"
         app:layout_heightPercent="8%"
         app:layout_widthPercent="42%" />
 
     <TextView
-        android:id="@+id/movie_description"
+        android:id="@+id/tile_description"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/movie_popularity"
+        android:layout_below="@id/tile_popularity"
         android:layout_toEndOf="@id/movie_image"
         app:layout_heightPercent="50%"
         app:layout_widthPercent="50%" />
@@ -57,7 +57,7 @@
         android:id="@+id/more_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/movie_description"
+        android:layout_below="@id/tile_description"
         android:layout_toEndOf="@id/movie_image"
         android:text="@string/more_info"
         app:layout_widthPercent="50%" />

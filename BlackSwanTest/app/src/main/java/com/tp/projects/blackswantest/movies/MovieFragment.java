@@ -1,11 +1,10 @@
-package com.tp.projects.blackswantest;
+package com.tp.projects.blackswantest.movies;
 
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,8 +14,9 @@ import android.view.ViewGroup;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.tp.projects.blackswantest.R;
 import com.tp.projects.blackswantest.util.JSONParser;
-import com.tp.projects.blackswantest.util.MovieDBResponseHandler;
+import com.tp.projects.blackswantest.util.DBResponseHandler;
 import com.tp.projects.blackswantest.util.NetworkHandler;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import java.util.List;
 public class MovieFragment extends Fragment {
 
     private Context ctx;
-    private List<MovieTile> list;
+    private List<MovieData> movieList;
     private View mainView;
 
     public MovieFragment() {
@@ -47,14 +47,14 @@ public class MovieFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.fragment_main,container,false);
+        mainView = inflater.inflate(R.layout.fragment_movie,container,false);
         return mainView;
     }
 
-    MovieDBResponseHandler movieDataResponseHandler;
+    DBResponseHandler movieDataResponseHandler;
 
-    private MovieDBResponseHandler cretateMovieDBResponseHandler() {
-        return new MovieDBResponseHandler(ctx) {
+    private DBResponseHandler cretateMovieDBResponseHandler() {
+        return new DBResponseHandler(ctx) {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
                 super.onCompleted(e, result);
@@ -69,21 +69,21 @@ public class MovieFragment extends Fragment {
 
 
     private void parseMovieJSONData(JsonObject result) {
-        list = new ArrayList<>();
+        movieList = new ArrayList<>();
         JsonArray jsonList = result.getAsJsonArray("results");
         for (JsonElement movieJSON : jsonList) {
-            MovieTile movie = (MovieTile) JSONParser.returnParsedClass(movieJSON, MovieTile.class);
+            MovieData movie = (MovieData) JSONParser.returnParsedClass(movieJSON, MovieData.class);
             movie.setImageURLs();
-            list.add(movie);
+            movieList.add(movie);
         }
     }
 
     private void initializeTileLayout() {
-        RecyclerView recyclerView = (RecyclerView) mainView.findViewById(R.id.movie_tiles_container);
+        RecyclerView recyclerView = (RecyclerView) mainView.findViewById(R.id.movies_container);
         if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-            recyclerView.setAdapter(new MovieTilesAdapter(ctx, list));
+            recyclerView.setAdapter(new MovieTilesAdapter(ctx, movieList));
         }
     }
 

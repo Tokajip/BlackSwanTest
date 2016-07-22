@@ -1,4 +1,4 @@
-package com.tp.projects.blackswantest;
+package com.tp.projects.blackswantest.movies;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.tp.projects.blackswantest.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,27 +31,27 @@ public class MovieTilesAdapter extends RecyclerView.Adapter<MovieTilesAdapter.Vi
     }
 
     Context ctx;
-    List<MovieTile> movieList;
+    List<MovieData> movieList;
 
-    public MovieTilesAdapter(Context context, List<MovieTile> movieTiles) {
+    public MovieTilesAdapter(Context context, List<MovieData> movieDatas) {
         ctx = context;
         movieList = new ArrayList<>();
-        movieList.addAll(movieTiles);
+        movieList.addAll(movieDatas);
     }
 
 
     @Override
     public Viewholder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View tile = LayoutInflater.from(ctx).inflate(R.layout.movie_tile, parent, false);
+        View tile = LayoutInflater.from(ctx).inflate(R.layout.tile_layout, parent, false);
 
         return new Viewholder(tile);
     }
 
     @Override
     public void onBindViewHolder(Viewholder holder, final int position) {
-        ((TextView) holder.tile.findViewById(R.id.movie_title)).setText(movieList.get(position).getTitle());
-        ((TextView) holder.tile.findViewById(R.id.movie_popularity)).setText(String.valueOf(movieList.get(position).getPopularity()));
-        ((TextView) holder.tile.findViewById(R.id.movie_description)).setText(movieList.get(position).getOverview());
+        ((TextView) holder.tile.findViewById(R.id.tile_title)).setText(movieList.get(position).getTitle());
+        ((TextView) holder.tile.findViewById(R.id.tile_popularity)).setText(String.valueOf(movieList.get(position).getVoteAverage()));
+        ((TextView) holder.tile.findViewById(R.id.tile_description)).setText(movieList.get(position).getOverview());
         holder.tile.findViewById(R.id.more_info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

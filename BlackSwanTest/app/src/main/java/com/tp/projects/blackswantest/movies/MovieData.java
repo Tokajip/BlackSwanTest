@@ -1,4 +1,4 @@
-package com.tp.projects.blackswantest;
+package com.tp.projects.blackswantest.movies;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Tokaji Peter on 21/07/16.
  */
-public class MovieTile implements Serializable{
+public class MovieData implements Serializable{
 
 
     @SerializedName("poster_path")
@@ -255,5 +255,6 @@ public class MovieTile implements Serializable{
 
     public void setImageURLs() {
         posterPath = NetworkHandler.createTileImageURL(posterPath);
+        backdropPath = NetworkHandler.createHeaderImageURL(backdropPath);
     }
 }
