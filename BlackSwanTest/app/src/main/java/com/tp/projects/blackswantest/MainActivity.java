@@ -58,12 +58,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ctx = this;
 
-        View pageContainer = findViewById(R.id.page_container);
-
-        movieDataResponseHandler = cretateMovieDBResponseHandler();
-        NetworkHandler.downloadMovieData(ctx, movieDataResponseHandler);
 
     }
 
@@ -114,7 +109,7 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-    
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
