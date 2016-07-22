@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tp.projects.blackswantest.R;
-import com.tp.projects.blackswantest.movies.MovieDetailsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +60,7 @@ public class TVShowTilesAdapter extends RecyclerView.Adapter<TVShowTilesAdapter.
         Picasso.with(ctx)
                 .load(showList.get(position).getPosterPath())
                 .placeholder(R.mipmap.ic_launcher)
-                .into((ImageView) holder.tvshow.findViewById(R.id.movie_image));
+                .into((ImageView) holder.tvshow.findViewById(R.id.tile_image));
 
     }
 

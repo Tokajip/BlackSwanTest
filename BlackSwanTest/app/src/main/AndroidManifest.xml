@@ -23,7 +23,8 @@
             android:name=".movies.MovieDetailsActivity"
             android:label="@string/title_activity_movie_details"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".tvshows.TVShowDetailsActivity"></activity>
+        <activity android:name=".tvshows.TVShowDetailsActivity" />
+        <activity android:name=".persons.PersonDetailsActivity"></activity>
     </application>
 
 </manifest>

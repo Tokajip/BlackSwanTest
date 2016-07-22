@@ -6,7 +6,7 @@
     android:layout_marginBottom="8dp">
 
     <ImageView
-        android:id="@+id/movie_image"
+        android:id="@+id/tile_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/app_name"
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_toEndOf="@id/movie_image"
+        android:layout_toEndOf="@id/tile_image"
         android:text="Test movie title"
         app:layout_widthPercent="50%" />
 
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tile_title"
-        android:layout_toEndOf="@id/movie_image"
+        android:layout_toEndOf="@id/tile_image"
         android:src="@drawable/ic_star_black_18dp"
         app:layout_heightPercent="8%"
         app:layout_widthPercent="8%" />
@@ -49,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tile_popularity"
-        android:layout_toEndOf="@id/movie_image"
+        android:layout_toEndOf="@id/tile_image"
         app:layout_heightPercent="50%"
         app:layout_widthPercent="50%" />
 
@@ -58,7 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tile_description"
-        android:layout_toEndOf="@id/movie_image"
+        android:layout_toEndOf="@id/tile_image"
         android:text="@string/more_info"
         app:layout_widthPercent="50%" />
 </android.support.percent.PercentRelativeLayout>

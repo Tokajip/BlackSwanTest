@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.tp.projects.blackswantest.movies.MovieFragment;
+import com.tp.projects.blackswantest.persons.PersonsFragment;
 import com.tp.projects.blackswantest.tvshows.TVShowFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.drawer_tvshow) {
             transaction.replace(R.id.fragment,new TVShowFragment());
         } else if (id == R.id.drawer_person) {
-
+            transaction.replace(R.id.fragment,new PersonsFragment());
         }
         transaction.commit();
 

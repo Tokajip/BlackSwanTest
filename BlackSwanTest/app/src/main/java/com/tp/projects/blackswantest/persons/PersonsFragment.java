@@ -1,4 +1,4 @@
-package com.tp.projects.blackswantest.tvshows;
+package com.tp.projects.blackswantest.persons;
 
 
 import android.content.Context;
@@ -15,9 +15,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.tp.projects.blackswantest.R;
-import com.tp.projects.blackswantest.movies.MovieTilesAdapter;
-import com.tp.projects.blackswantest.util.JSONParser;
 import com.tp.projects.blackswantest.util.DBResponseHandler;
+import com.tp.projects.blackswantest.util.JSONParser;
 import com.tp.projects.blackswantest.util.NetworkHandler;
 
 import java.util.ArrayList;
@@ -26,14 +25,13 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TVShowFragment extends Fragment {
+public class PersonsFragment extends Fragment {
 
     private Context ctx;
-    private List<TVShowData> tvshowList;
+    private List<PersonData> personList;
     private View mainView;
 
-    public TVShowFragment() {
-        // Required empty public constructor
+    public PersonsFragment() {
     }
 
     @Override
@@ -41,9 +39,10 @@ public class TVShowFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ctx = getActivity();
-        tvshowDataResponseHandler = cretateTvShowDBResponseHandler();
-        NetworkHandler.downloadTvShowData(ctx, tvshowDataResponseHandler);
+        personDataResponseHandler = createPersonDBResponseHandler();
+        NetworkHandler.downloadPersonsData(ctx, personDataResponseHandler);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,15 +51,15 @@ public class TVShowFragment extends Fragment {
         return mainView;
     }
 
-    DBResponseHandler tvshowDataResponseHandler;
+    DBResponseHandler personDataResponseHandler;
 
-    private DBResponseHandler cretateTvShowDBResponseHandler() {
+    private DBResponseHandler createPersonDBResponseHandler() {
         return new DBResponseHandler(ctx) {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
                 super.onCompleted(e, result);
                 if (e == null) {
-                    parseTVShowJSONData(result);
+                    parsePersonJSONData(result);
                     initializeTileLayout();
                 }
             }
@@ -69,13 +68,13 @@ public class TVShowFragment extends Fragment {
     }
 
 
-    private void parseTVShowJSONData(JsonObject result) {
-        tvshowList = new ArrayList<>();
+    private void parsePersonJSONData(JsonObject result) {
+        personList = new ArrayList<>();
         JsonArray jsonList = result.getAsJsonArray("results");
-        for (JsonElement movieJSON : jsonList) {
-            TVShowData show = (TVShowData) JSONParser.returnParsedClass(movieJSON, TVShowData.class);
-            show.setImageURLs();
-            tvshowList.add(show);
+        for (JsonElement personJSON : jsonList) {
+            PersonData person = (PersonData) JSONParser.returnParsedClass(personJSON, PersonData.class);
+            person.setImageURLs();
+            personList.add(person);
         }
     }
 
@@ -84,11 +83,9 @@ public class TVShowFragment extends Fragment {
         if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-            recyclerView.setAdapter(new TVShowTilesAdapter(ctx, tvshowList));
+            recyclerView.setAdapter(new PersonTilesAdapter(ctx, personList));
         }
     }
-
-
 
 
 }

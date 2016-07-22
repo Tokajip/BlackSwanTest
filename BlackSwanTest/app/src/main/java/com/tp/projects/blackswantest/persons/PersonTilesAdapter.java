@@ -1,4 +1,4 @@
-package com.tp.projects.blackswantest.movies;
+package com.tp.projects.blackswantest.persons;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,16 +11,27 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tp.projects.blackswantest.R;
+import com.tp.projects.blackswantest.movies.MovieDetailsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Tokaji Peter on 21/07/16.
+ * Created by Peti on 2016. 07. 22..
  */
-public class MovieTilesAdapter extends RecyclerView.Adapter<MovieTilesAdapter.Viewholder> {
+public class PersonTilesAdapter extends RecyclerView.Adapter<PersonTilesAdapter.Viewholder> {
 
-    public static class Viewholder extends RecyclerView.ViewHolder {
+    Context ctx;
+    List<PersonData> list;
+
+    public PersonTilesAdapter(Context context, List<PersonData> personList) {
+        ctx = context;
+        list = new ArrayList<>();
+        list.addAll(personList);
+    }
+
+
+    public class Viewholder extends RecyclerView.ViewHolder{
 
         View tile;
 
@@ -30,46 +41,41 @@ public class MovieTilesAdapter extends RecyclerView.Adapter<MovieTilesAdapter.Vi
         }
     }
 
-    Context ctx;
-    List<MovieData> movieList;
-
-    public MovieTilesAdapter(Context context, List<MovieData> movieDatas) {
-        ctx = context;
-        movieList = new ArrayList<>();
-        movieList.addAll(movieDatas);
-    }
-
-
     @Override
     public Viewholder onCreateViewHolder(ViewGroup parent, int viewType) {
         View tile = LayoutInflater.from(ctx).inflate(R.layout.tile_layout, parent, false);
-
         return new Viewholder(tile);
     }
 
     @Override
     public void onBindViewHolder(Viewholder holder, final int position) {
-        ((TextView) holder.tile.findViewById(R.id.tile_title)).setText(movieList.get(position).getTitle());
-        ((TextView) holder.tile.findViewById(R.id.tile_popularity)).setText(String.valueOf(movieList.get(position).getVoteAverage()));
-        ((TextView) holder.tile.findViewById(R.id.tile_description)).setText(movieList.get(position).getOverview());
+        ((TextView) holder.tile.findViewById(R.id.tile_title)).setText(list.get(position).getName());
+        ((TextView) holder.tile.findViewById(R.id.tile_popularity)).setText(String.valueOf(list.get(position).getPopularity()));
+        String movies="";
+        for (PersonData.KnownFor movie: list.get(position).getKnownFor()) {
+            movies += movie.getTitle()+", ";
+        }
+        ((TextView) holder.tile.findViewById(R.id.tile_description)).setText(movies);
         holder.tile.findViewById(R.id.more_info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ctx, MovieDetailsActivity.class);
-                intent.putExtra("movie",movieList.get(position));
+                Intent intent = new Intent(ctx, PersonDetailsActivity.class);
+                intent.putExtra("person",list.get(position));
                 ctx.startActivity(intent);
             }
         });
 
         Picasso.with(ctx)
-                .load(movieList.get(position).getPosterPath())
+                .load(list.get(position).getProfilePath())
                 .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) holder.tile.findViewById(R.id.tile_image));
+
 
     }
 
     @Override
     public int getItemCount() {
-        return movieList.size();
+        return list.size();
     }
+
 }

@@ -47,7 +47,7 @@ public class MovieFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.fragment_movie,container,false);
+        mainView = inflater.inflate(R.layout.fragment,container,false);
         return mainView;
     }
 
@@ -71,23 +71,20 @@ public class MovieFragment extends Fragment {
     private void parseMovieJSONData(JsonObject result) {
         movieList = new ArrayList<>();
         JsonArray jsonList = result.getAsJsonArray("results");
-        for (JsonElement movieJSON : jsonList) {
-            MovieData movie = (MovieData) JSONParser.returnParsedClass(movieJSON, MovieData.class);
+        for (JsonElement showJSON : jsonList) {
+            MovieData movie = (MovieData) JSONParser.returnParsedClass(showJSON, MovieData.class);
             movie.setImageURLs();
             movieList.add(movie);
         }
     }
 
     private void initializeTileLayout() {
-        RecyclerView recyclerView = (RecyclerView) mainView.findViewById(R.id.movies_container);
+        RecyclerView recyclerView = (RecyclerView) mainView.findViewById(R.id.tiles_container);
         if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
             recyclerView.setAdapter(new MovieTilesAdapter(ctx, movieList));
         }
     }
-
-
-
 
 }

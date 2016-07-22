@@ -18,13 +18,6 @@ public class NetworkHandler {
     private static String tileImageWidth = "w154";
     private static String headerImageWidth = "w300";
 
-    public static String getBaseURL() {
-        return baseURL;
-    }
-
-    public static String getImageBaseUrl() {
-        return imageBaseUrl;
-    }
 
     public static String createGETUrl(String path) {
         return baseURL + path + "?api_key=" + apiKey;
@@ -57,6 +50,12 @@ public class NetworkHandler {
                 .setCallback(tvshowDataResponseHandler);
     }
 
+    public static void downloadPersonsData(Context ctx, DBResponseHandler personDataResponseHandler) {
+        Ion.with(ctx)
+                .load(NetworkHandler.createGETUrl("person/popular"))
+                .asJsonObject()
+                .setCallback(personDataResponseHandler);
+    }
     public static void downloadConfig(Context ctx, FutureCallback<JsonObject> responseHandler) {
         Ion.with(ctx)
                 .load(NetworkHandler.createGETUrl("configuration"))
