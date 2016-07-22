@@ -8,13 +8,13 @@ import org.junit.Before;
 /**
  * Created by Tokaji Peter on 21/07/16.
  */
-public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
+public class MainActivityTest extends ActivityInstrumentationTestCase2<MovieActivity> {
 
     public MainActivityTest() {
-        super(MainActivity.class);
+        super(MovieActivity.class);
     }
 
-    MainActivity activity;
+    MovieActivity activity;
 
     @Before
     public void setUp() throws Exception {
