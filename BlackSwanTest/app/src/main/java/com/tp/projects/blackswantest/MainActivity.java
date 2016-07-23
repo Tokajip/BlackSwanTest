@@ -1,5 +1,6 @@
 package com.tp.projects.blackswantest;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -18,12 +19,18 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.tp.projects.blackswantest.movies.MovieFragment;
 import com.tp.projects.blackswantest.persons.PersonsFragment;
 import com.tp.projects.blackswantest.tvshows.TVShowFragment;
+import com.tp.projects.blackswantest.util.NetworkHandler;
+import com.tp.projects.blackswantest.util.OfllineFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private MaterialSearchView searchView;
     private MenuItem searchIcon;
+    static Context ctx;
+
+
+    private static MainActivity mainActivityRunningInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +38,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ctx = this;
+        mainActivityRunningInstance = this;
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -51,14 +62,12 @@ public class MainActivity extends AppCompatActivity
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //Do some magic
                 MovieFragment.setSearchedLayout(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //Do some magic
                 return false;
             }
         });
@@ -66,13 +75,11 @@ public class MainActivity extends AppCompatActivity
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
-                //Do some magic
                 searchView.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onSearchViewClosed() {
-                //Do some magic
                 searchView.setVisibility(View.GONE);
 
             }
@@ -94,13 +101,12 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction = getSupportFragmentManager().beginTransaction();
 
 
         if (id == R.id.drawer_movie) {
-            // Handle the camera action
             transaction.replace(R.id.fragment, new MovieFragment());
             searchIcon.setVisible(true);
         } else if (id == R.id.drawer_tvshow) {
@@ -125,5 +131,28 @@ public class MainActivity extends AppCompatActivity
         searchView.setMenuItem(searchIcon);
 
         return true;
+    }
+
+    public void setOfflineFragmentVisible() {
+        MainActivity.this.runOnUiThread(new Runnable() {
+            public void run() {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment,new OfllineFragment()).commit();
+            }
+        });
+
+    }
+
+    public static MainActivity  getInstace(){
+        return mainActivityRunningInstance;
+    }
+
+    public void restart() {
+        MainActivity.this.runOnUiThread(new Runnable() {
+            public void run() {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment,new MovieFragment()).commit();
+            }
+        });
     }
 }
