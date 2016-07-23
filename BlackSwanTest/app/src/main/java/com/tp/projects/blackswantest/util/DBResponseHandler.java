@@ -22,7 +22,6 @@ public class DBResponseHandler implements FutureCallback<JsonObject> {
         if (e == null) {
             if (result.get("status_code") != null) {
                 Toast.makeText(ctx, "No Internet", Toast.LENGTH_SHORT).show();
-                e = new Exception();
             }
         }
     }

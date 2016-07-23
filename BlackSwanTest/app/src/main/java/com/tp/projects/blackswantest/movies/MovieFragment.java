@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.tp.projects.blackswantest.R;
 import com.tp.projects.blackswantest.util.JSONParser;
 import com.tp.projects.blackswantest.util.DBResponseHandler;
@@ -27,9 +28,11 @@ import java.util.List;
  */
 public class MovieFragment extends Fragment {
 
-    private Context ctx;
-    private List<MovieData> movieList;
+    private static Context ctx;
+    private static List<MovieData> movieList;
+    private static List<MovieData> searchedList;
     private View mainView;
+    private static RecyclerView recyclerView;
 
     public MovieFragment() {
         // Required empty public constructor
@@ -42,6 +45,9 @@ public class MovieFragment extends Fragment {
         ctx = getActivity();
         movieDataResponseHandler = cretateMovieDBResponseHandler();
         NetworkHandler.downloadMovieData(ctx, movieDataResponseHandler);
+
+
+
     }
 
     @Override
@@ -79,7 +85,7 @@ public class MovieFragment extends Fragment {
     }
 
     private void initializeTileLayout() {
-        RecyclerView recyclerView = (RecyclerView) mainView.findViewById(R.id.tiles_container);
+        recyclerView = (RecyclerView) mainView.findViewById(R.id.tiles_container);
         if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
@@ -87,4 +93,15 @@ public class MovieFragment extends Fragment {
         }
     }
 
+
+    public static void setSearchedLayout(String query) {
+        searchedList = new ArrayList<MovieData>();
+        for (MovieData movie: movieList) {
+            if(movie.getTitle().contains(query)){
+                searchedList.add(movie);
+            }
+        }
+        recyclerView.setAdapter(new MovieTilesAdapter(ctx,searchedList));
+
+    }
 }

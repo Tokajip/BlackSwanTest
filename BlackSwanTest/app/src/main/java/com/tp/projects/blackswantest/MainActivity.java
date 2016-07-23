@@ -10,9 +10,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.tp.projects.blackswantest.movies.MovieFragment;
 import com.tp.projects.blackswantest.persons.PersonsFragment;
 import com.tp.projects.blackswantest.tvshows.TVShowFragment;
@@ -20,6 +22,8 @@ import com.tp.projects.blackswantest.tvshows.TVShowFragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private MaterialSearchView searchView;
+    private MenuItem searchIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,15 +31,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -46,9 +41,42 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.fragment,new MovieFragment());
-        transaction.commit();
+        if (savedInstanceState == null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.fragment, new MovieFragment());
+            transaction.commit();
+        }
+
+        searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //Do some magic
+                MovieFragment.setSearchedLayout(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //Do some magic
+                return false;
+            }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                //Do some magic
+                searchView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                //Do some magic
+                searchView.setVisibility(View.GONE);
+
+            }
+        });
     }
 
 
@@ -73,16 +101,29 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.drawer_movie) {
             // Handle the camera action
-            transaction.replace(R.id.fragment,new MovieFragment());
+            transaction.replace(R.id.fragment, new MovieFragment());
+            searchIcon.setVisible(true);
         } else if (id == R.id.drawer_tvshow) {
-            transaction.replace(R.id.fragment,new TVShowFragment());
+            transaction.replace(R.id.fragment, new TVShowFragment());
+            searchIcon.setVisible(false);
         } else if (id == R.id.drawer_person) {
-            transaction.replace(R.id.fragment,new PersonsFragment());
+            transaction.replace(R.id.fragment, new PersonsFragment());
+            searchIcon.setVisible(false);
         }
         transaction.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        searchIcon = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(searchIcon);
+
         return true;
     }
 }
