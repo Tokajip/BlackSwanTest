@@ -28,4 +28,17 @@
         <item name="android:layout_marginEnd">4dp</item>
     </style>
 
+    <style name="movie_details_title">
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="movie_details_value">
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Tokaji Peter on 21/07/16.
  */
-public class MovieData implements Serializable{
+public class MovieData implements Serializable {
 
 
     @SerializedName("poster_path")
