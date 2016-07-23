@@ -1,13 +1,15 @@
 package com.tp.projects.blackswantest.tvshows;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.tp.projects.blackswantest.R;
-import com.tp.projects.blackswantest.movies.MovieData;
+import com.tp.projects.blackswantest.databinding.ActivityMovieDetailsBinding;
+import com.tp.projects.blackswantest.databinding.ActivityTvshowDetailsBinding;
 
 public class TVShowDetailsActivity extends AppCompatActivity {
 
@@ -17,13 +19,15 @@ public class TVShowDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tvshow_details);
+        ActivityTvshowDetailsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_tvshow_details);
 
-        if(getIntent().getExtras() != null) {
+
+        if (getIntent().getExtras() != null) {
             show = (TVShowData) getIntent().getExtras().get("show");
         }
         ctx = this;
         ImageView header = (ImageView) findViewById(R.id.show_detail_header);
+        binding.setShow(show);
 
         Picasso.with(ctx)
                 .load(show.getBackdropPath())

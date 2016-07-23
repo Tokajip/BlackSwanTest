@@ -14,11 +14,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="offline_text">No Internet connection</string>
-    <string name="title_adult">Adult film</string>
+    <string name="title_adult_film">Adult film</string>
+    <string name="title_adult_person">Is he/she adult</string>
     <string name="title_overview">Overview</string>
     <string name="title_release_date">Release date</string>
     <string name="title_title">Title</string>
     <string name="title_original_title">Original Title</string>
     <string name="title_popularity">Popularity</string>
     <string name="title_vote_avg">Vote Average</string>
+    <string name="title_name">Name</string>
+    <string name="title_first_air_date">First Air Date</string>
 </resources>
