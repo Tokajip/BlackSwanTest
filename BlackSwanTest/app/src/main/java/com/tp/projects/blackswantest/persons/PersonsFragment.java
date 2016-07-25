@@ -14,8 +14,9 @@ import android.view.ViewGroup;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.tp.projects.blackswantest.MainActivity;
 import com.tp.projects.blackswantest.R;
-import com.tp.projects.blackswantest.util.DBResponseHandler;
 import com.tp.projects.blackswantest.util.JSONParser;
 import com.tp.projects.blackswantest.util.NetworkHandler;
 
@@ -39,28 +40,29 @@ public class PersonsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ctx = getActivity();
-        personDataResponseHandler = createPersonDBResponseHandler();
-        NetworkHandler.downloadPersonsData(ctx, personDataResponseHandler);
+        NetworkHandler.downloadPersonsData(ctx, createPersonDBResponseHandler());
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.fragment,container,false);
+        mainView = inflater.inflate(R.layout.fragment, container, false);
         return mainView;
     }
 
-    DBResponseHandler personDataResponseHandler;
 
-    private DBResponseHandler createPersonDBResponseHandler() {
-        return new DBResponseHandler(ctx) {
+    private FutureCallback<JsonObject> createPersonDBResponseHandler() {
+        return new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
-                super.onCompleted(e, result);
                 if (e == null) {
-                    parsePersonJSONData(result);
-                    initializeTileLayout();
+                    if (result.get("status_code") != null) {
+                        MainActivity.getInstace().setNetworkErrorFragmentVisible(result.get("status_code").getAsString(), result.get("status_message").getAsString());
+                    } else {
+                        parsePersonJSONData(result);
+                        initializeTileLayout();
+                    }
                 }
             }
         };

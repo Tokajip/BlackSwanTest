@@ -45,14 +45,14 @@ public class NetworkHandler {
                 .setCallback(responseHandler);
     }
 
-    public static void downloadTvShowData(Context ctx, DBResponseHandler tvshowDataResponseHandler) {
+    public static void downloadTvShowData(Context ctx, FutureCallback<JsonObject> tvshowDataResponseHandler) {
         Ion.with(ctx)
                 .load(NetworkHandler.createGETUrl("tv/popular"))
                 .asJsonObject()
                 .setCallback(tvshowDataResponseHandler);
     }
 
-    public static void downloadPersonsData(Context ctx, DBResponseHandler personDataResponseHandler) {
+    public static void downloadPersonsData(Context ctx, FutureCallback<JsonObject> personDataResponseHandler) {
         Ion.with(ctx)
                 .load(NetworkHandler.createGETUrl("person/popular"))
                 .asJsonObject()

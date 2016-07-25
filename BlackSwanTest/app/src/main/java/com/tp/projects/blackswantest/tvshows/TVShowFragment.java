@@ -14,10 +14,10 @@ import android.view.ViewGroup;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.tp.projects.blackswantest.MainActivity;
 import com.tp.projects.blackswantest.R;
-import com.tp.projects.blackswantest.movies.MovieTilesAdapter;
 import com.tp.projects.blackswantest.util.JSONParser;
-import com.tp.projects.blackswantest.util.DBResponseHandler;
 import com.tp.projects.blackswantest.util.NetworkHandler;
 
 import java.util.ArrayList;
@@ -41,27 +41,28 @@ public class TVShowFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ctx = getActivity();
-        tvshowDataResponseHandler = cretateTvShowDBResponseHandler();
-        NetworkHandler.downloadTvShowData(ctx, tvshowDataResponseHandler);
+        NetworkHandler.downloadTvShowData(ctx, cretateTvShowDBResponseHandler());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.fragment,container,false);
+        mainView = inflater.inflate(R.layout.fragment, container, false);
         return mainView;
     }
 
-    DBResponseHandler tvshowDataResponseHandler;
 
-    private DBResponseHandler cretateTvShowDBResponseHandler() {
-        return new DBResponseHandler(ctx) {
+    private FutureCallback<JsonObject> cretateTvShowDBResponseHandler() {
+        return new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
-                super.onCompleted(e, result);
                 if (e == null) {
-                    parseTVShowJSONData(result);
-                    initializeTileLayout();
+                    if (result.get("status_code") != null) {
+                        MainActivity.getInstace().setNetworkErrorFragmentVisible(result.get("status_code").getAsString(), result.get("status_message").getAsString());
+                    } else {
+                        parseTVShowJSONData(result);
+                        initializeTileLayout();
+                    }
                 }
             }
         };
@@ -87,8 +88,6 @@ public class TVShowFragment extends Fragment {
             recyclerView.setAdapter(new TVShowTilesAdapter(ctx, tvshowList));
         }
     }
-
-
 
 
 }

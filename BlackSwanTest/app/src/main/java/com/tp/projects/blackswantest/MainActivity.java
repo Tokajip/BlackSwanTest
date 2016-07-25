@@ -19,6 +19,7 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.tp.projects.blackswantest.movies.MovieFragment;
 import com.tp.projects.blackswantest.persons.PersonsFragment;
 import com.tp.projects.blackswantest.tvshows.TVShowFragment;
+import com.tp.projects.blackswantest.util.NetworkErrorFragment;
 import com.tp.projects.blackswantest.util.NetworkHandler;
 import com.tp.projects.blackswantest.util.OfllineFragment;
 
@@ -141,6 +142,15 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    public void setNetworkErrorFragmentVisible(final String status_code, final String status_message) {
+        MainActivity.this.runOnUiThread(new Runnable() {
+            public void run() {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment, NetworkErrorFragment.newInstance(status_message,status_code)).commit();
+            }
+        });
     }
 
     public static MainActivity  getInstace(){

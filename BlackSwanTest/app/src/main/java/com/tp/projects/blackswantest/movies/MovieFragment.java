@@ -14,10 +14,10 @@ import android.view.ViewGroup;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.koushikdutta.async.future.FutureCallback;
+import com.tp.projects.blackswantest.MainActivity;
 import com.tp.projects.blackswantest.R;
 import com.tp.projects.blackswantest.util.JSONParser;
-import com.tp.projects.blackswantest.util.DBResponseHandler;
 import com.tp.projects.blackswantest.util.NetworkHandler;
 
 import java.util.ArrayList;
@@ -35,7 +35,6 @@ public class MovieFragment extends Fragment {
     private static RecyclerView recyclerView;
 
     public MovieFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -43,9 +42,7 @@ public class MovieFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ctx = getActivity();
-        movieDataResponseHandler = cretateMovieDBResponseHandler();
-        NetworkHandler.downloadMovieData(ctx, movieDataResponseHandler);
-
+        NetworkHandler.downloadMovieData(ctx, cretateMovieDBResponseHandler());
 
 
     }
@@ -53,20 +50,23 @@ public class MovieFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.fragment,container,false);
+        mainView = inflater.inflate(R.layout.fragment, container, false);
         return mainView;
     }
 
-    DBResponseHandler movieDataResponseHandler;
 
-    private DBResponseHandler cretateMovieDBResponseHandler() {
-        return new DBResponseHandler(ctx) {
+    private FutureCallback<JsonObject> cretateMovieDBResponseHandler() {
+        return new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
-                super.onCompleted(e, result);
                 if (e == null) {
-                    parseMovieJSONData(result);
-                    initializeTileLayout();
+                    if (result.get("status_code") != null) {
+                        MainActivity.getInstace().setNetworkErrorFragmentVisible(result.get("status_code").getAsString(), result.get("status_message").getAsString());
+                    } else {
+                        parseMovieJSONData(result);
+                        initializeTileLayout(e);
+                    }
+
                 }
             }
         };
@@ -84,7 +84,7 @@ public class MovieFragment extends Fragment {
         }
     }
 
-    private void initializeTileLayout() {
+    private void initializeTileLayout(Exception e) {
         recyclerView = (RecyclerView) mainView.findViewById(R.id.tiles_container);
         if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);
@@ -96,12 +96,12 @@ public class MovieFragment extends Fragment {
 
     public static void setSearchedLayout(String query) {
         searchedList = new ArrayList<MovieData>();
-        for (MovieData movie: movieList) {
-            if(movie.getTitle().contains(query)){
+        for (MovieData movie : movieList) {
+            if (movie.getTitle().contains(query)) {
                 searchedList.add(movie);
             }
         }
-        recyclerView.setAdapter(new MovieTilesAdapter(ctx,searchedList));
+        recyclerView.setAdapter(new MovieTilesAdapter(ctx, searchedList));
 
     }
 }
