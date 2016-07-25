@@ -39,7 +39,7 @@ public class TVShowTilesAdapter extends RecyclerView.Adapter<TVShowTilesAdapter.
 
     @Override
     public Viewholder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View tile = LayoutInflater.from(ctx).inflate(R.layout.tile_layout,parent,false);
+        View tile = LayoutInflater.from(ctx).inflate(R.layout.tile_layout, parent, false);
         return new Viewholder(tile);
     }
 
@@ -52,7 +52,7 @@ public class TVShowTilesAdapter extends RecyclerView.Adapter<TVShowTilesAdapter.
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ctx, TVShowDetailsActivity.class);
-                intent.putExtra("show",showList.get(position));
+                intent.putExtra("show", showList.get(position));
                 ctx.startActivity(intent);
             }
         });

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.tp.projects.blackswantest.R;
 import com.tp.projects.blackswantest.databinding.ActivityMovieDetailsBinding;
-import com.tp.projects.blackswantest.util.NetworkHandler;
 
 public class MovieDetailsActivity extends AppCompatActivity {
 
@@ -22,7 +21,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityMovieDetailsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_details);
 
-        if(getIntent().getExtras() != null) {
+        if (getIntent().getExtras() != null) {
             movie = (MovieData) getIntent().getExtras().get("movie");
         }
         binding.setMovie(movie);
@@ -35,7 +34,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 .into(header);
 
         if (findViewById(R.id.value_adult) != null) {
-            ((TextView)findViewById(R.id.value_adult)).setText(movie.getAdult()?"Yes":"No");
+            ((TextView) findViewById(R.id.value_adult)).setText(movie.getAdult() ? "Yes" : "No");
         }
     }
 

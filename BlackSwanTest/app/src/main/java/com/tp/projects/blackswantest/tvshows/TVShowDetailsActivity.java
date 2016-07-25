@@ -8,7 +8,6 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.tp.projects.blackswantest.R;
-import com.tp.projects.blackswantest.databinding.ActivityMovieDetailsBinding;
 import com.tp.projects.blackswantest.databinding.ActivityTvshowDetailsBinding;
 
 public class TVShowDetailsActivity extends AppCompatActivity {

@@ -56,7 +56,7 @@ public class MovieTilesAdapter extends RecyclerView.Adapter<MovieTilesAdapter.Vi
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ctx, MovieDetailsActivity.class);
-                intent.putExtra("movie",movieList.get(position));
+                intent.putExtra("movie", movieList.get(position));
                 ctx.startActivity(intent);
             }
         });

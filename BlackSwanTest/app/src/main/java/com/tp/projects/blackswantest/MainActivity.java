@@ -2,9 +2,7 @@ package com.tp.projects.blackswantest;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,8 +18,7 @@ import com.tp.projects.blackswantest.movies.MovieFragment;
 import com.tp.projects.blackswantest.persons.PersonsFragment;
 import com.tp.projects.blackswantest.tvshows.TVShowFragment;
 import com.tp.projects.blackswantest.util.NetworkErrorFragment;
-import com.tp.projects.blackswantest.util.NetworkHandler;
-import com.tp.projects.blackswantest.util.OfllineFragment;
+import com.tp.projects.blackswantest.util.OfflineFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -138,7 +135,7 @@ public class MainActivity extends AppCompatActivity
         MainActivity.this.runOnUiThread(new Runnable() {
             public void run() {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment,new OfllineFragment()).commit();
+                transaction.replace(R.id.fragment, new OfflineFragment()).commit();
             }
         });
 
@@ -148,12 +145,12 @@ public class MainActivity extends AppCompatActivity
         MainActivity.this.runOnUiThread(new Runnable() {
             public void run() {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment, NetworkErrorFragment.newInstance(status_message,status_code)).commit();
+                transaction.replace(R.id.fragment, NetworkErrorFragment.newInstance(status_message, status_code)).commit();
             }
         });
     }
 
-    public static MainActivity  getInstace(){
+    public static MainActivity getInstace() {
         return mainActivityRunningInstance;
     }
 
@@ -161,7 +158,7 @@ public class MainActivity extends AppCompatActivity
         MainActivity.this.runOnUiThread(new Runnable() {
             public void run() {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment,new MovieFragment()).commit();
+                transaction.replace(R.id.fragment, new MovieFragment()).commit();
             }
         });
     }

@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tp.projects.blackswantest.R;
-import com.tp.projects.blackswantest.movies.MovieDetailsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class PersonTilesAdapter extends RecyclerView.Adapter<PersonTilesAdapter.
     }
 
 
-    public class Viewholder extends RecyclerView.ViewHolder{
+    public class Viewholder extends RecyclerView.ViewHolder {
 
         View tile;
 
@@ -51,16 +50,16 @@ public class PersonTilesAdapter extends RecyclerView.Adapter<PersonTilesAdapter.
     public void onBindViewHolder(Viewholder holder, final int position) {
         ((TextView) holder.tile.findViewById(R.id.tile_title)).setText(list.get(position).getName());
         ((TextView) holder.tile.findViewById(R.id.tile_popularity)).setText(String.valueOf(list.get(position).getPopularity()));
-        String movies="";
-        for (PersonData.KnownFor movie: list.get(position).getKnownFor()) {
-            movies += movie.getTitle()+", ";
+        String movies = "";
+        for (PersonData.KnownFor movie : list.get(position).getKnownFor()) {
+            movies += movie.getTitle() + ", ";
         }
         ((TextView) holder.tile.findViewById(R.id.tile_description)).setText(movies);
         holder.tile.findViewById(R.id.more_info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ctx, PersonDetailsActivity.class);
-                intent.putExtra("person",list.get(position));
+                intent.putExtra("person", list.get(position));
                 ctx.startActivity(intent);
             }
         });

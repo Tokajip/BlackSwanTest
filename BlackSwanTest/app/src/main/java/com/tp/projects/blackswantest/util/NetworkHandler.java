@@ -58,6 +58,7 @@ public class NetworkHandler {
                 .asJsonObject()
                 .setCallback(personDataResponseHandler);
     }
+
     public static void downloadConfig(Context ctx, FutureCallback<JsonObject> responseHandler) {
         Ion.with(ctx)
                 .load(NetworkHandler.createGETUrl("configuration"))

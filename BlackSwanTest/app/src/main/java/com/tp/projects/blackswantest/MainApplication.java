@@ -1,7 +1,6 @@
 package com.tp.projects.blackswantest;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
@@ -21,8 +20,8 @@ public class MainApplication extends Application {
         NetworkHandler.downloadConfig(this, new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
-                if(e == null && result.get("status_code") == null)
-                NetworkHandler.initializeMovieDB(result.get("images").getAsJsonObject().get("base_url").getAsString());
+                if (e == null && result.get("status_code") == null)
+                    NetworkHandler.initializeMovieDB(result.get("images").getAsJsonObject().get("base_url").getAsString());
             }
         });
     }

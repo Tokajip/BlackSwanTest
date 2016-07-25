@@ -65,8 +65,8 @@ public class NetworkErrorFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         mainView = inflater.inflate(R.layout.fragment_network_error, container, false);
-        ((TextView)mainView.findViewById(R.id.error_message)).setText(error_text);
-        ((TextView)mainView.findViewById(R.id.error_code)).setText("Error code:"+error_code);
+        ((TextView) mainView.findViewById(R.id.error_message)).setText(error_text);
+        ((TextView) mainView.findViewById(R.id.error_code)).setText("Error code:" + error_code);
 
         return mainView;
     }

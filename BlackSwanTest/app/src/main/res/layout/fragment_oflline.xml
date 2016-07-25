@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tp.projects.blackswantest.util.OfllineFragment">
+    tools:context=".util.OfflineFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
