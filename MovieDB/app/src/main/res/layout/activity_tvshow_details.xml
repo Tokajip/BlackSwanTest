@@ -129,7 +129,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/title_vote_avg"
                     android:text="@{show.voteAverage.toString()}" />
- />
+                />
             </RelativeLayout>
         </ScrollView>
     </RelativeLayout>

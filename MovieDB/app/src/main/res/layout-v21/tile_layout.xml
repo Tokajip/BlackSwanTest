@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
+        android:elevation="8dp"
         android:layout_marginBottom="8dp"
         card_view:cardCornerRadius="4dp">
 
@@ -24,6 +25,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/app_name"
                 android:src="@mipmap/ic_launcher"
+                android:scaleType="fitCenter"
                 app:layout_widthPercent="50%" />
 
             <TextView
@@ -33,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/tile_image"
-                android:text="Test movie title"
+                android:text="Test movie title dsadsaddas "
                 app:layout_widthPercent="50%" />
 
             <ImageView
@@ -60,20 +62,20 @@
             <TextView
                 android:id="@+id/tile_description"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="85dp"
                 android:layout_below="@id/tile_popularity"
                 android:layout_toEndOf="@id/tile_image"
-                app:layout_heightPercent="50%"
                 app:layout_widthPercent="50%" />
 
             <Button
                 android:id="@+id/more_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tile_description"
+                android:layout_alignParentBottom="true"
                 android:layout_toEndOf="@id/tile_image"
                 android:text="@string/more_info"
                 app:layout_widthPercent="50%" />
+
         </android.support.percent.PercentRelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

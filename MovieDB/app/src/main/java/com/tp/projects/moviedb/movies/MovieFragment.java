@@ -17,6 +17,7 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.tp.projects.moviedb.MainActivity;
 import com.tp.projects.moviedb.R;
+import com.tp.projects.moviedb.TileAdapter;
 import com.tp.projects.moviedb.util.JSONParser;
 import com.tp.projects.moviedb.util.NetworkHandler;
 
@@ -101,7 +102,7 @@ public class MovieFragment extends Fragment {
                 searchedList.add(movie);
             }
         }
-        recyclerView.setAdapter(new MovieTilesAdapter(ctx, searchedList));
+        recyclerView.setAdapter(new TileAdapter(ctx, searchedList));
 
     }
 }

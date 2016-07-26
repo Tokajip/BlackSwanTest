@@ -18,7 +18,7 @@ public class NetworkHandler {
     private static String apiKey;
     private static String imageBaseUrl;
     private static String tileImageWidth = "w154";
-    private static String headerImageWidth = "w300";
+    private static String headerImageWidth = "w780";
 
 
     public static String createGETUrl(String path) {

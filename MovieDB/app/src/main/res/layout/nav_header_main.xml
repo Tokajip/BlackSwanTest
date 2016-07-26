@@ -31,6 +31,6 @@
         android:layout_height="wrap_content"
         android:text="https://www.themoviedb.org"
         android:autoLink="web"
-        android:textColorLink="@android:color/white"/>
+        android:textColorLink="@android:color/white" />
 
 </LinearLayout>

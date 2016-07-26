@@ -28,10 +28,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.tp.projects.moviedb.tvshows.TVShowDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.tp.projects.moviedb.persons.PersonDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <receiver android:name="com.tp.projects.moviedb.util.CheckConnectivity">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
