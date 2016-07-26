@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="person"
+            type="com.tp.projects.moviedb.persons.PersonData" />
+    </data>
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".persons.PersonDetailsActivity"
+        tools:showIn="@layout/activity_movie_details">
+
+
+        <ImageView
+            android:id="@+id/person_detail_header"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/person_detail_header">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:id="@+id/title_name"
+                    style="@style/movie_details_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/title_name" />
+
+                <TextView
+                    android:id="@+id/value_name"
+                    style="@style/movie_details_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title_name"
+                    android:text="@{person.name}" />
+
+
+                <TextView
+                    android:id="@+id/title_popularity"
+                    style="@style/movie_details_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/value_name"
+                    android:text="@string/title_popularity" />
+
+                <TextView
+                    android:id="@+id/value_popularity"
+                    style="@style/movie_details_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title_popularity"
+                    android:text="@{person.popularity.toString()}" />
+
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+</layout>

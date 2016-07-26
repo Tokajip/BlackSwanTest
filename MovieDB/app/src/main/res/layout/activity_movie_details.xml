@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="movie"
+            type="com.tp.projects.moviedb.movies.MovieData" />
+    </data>
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".movies.MovieDetailsActivity"
+        tools:showIn="@layout/activity_movie_details">
+
+
+        <ImageView
+            android:id="@+id/movie_detail_header"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/movie_detail_header">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:id="@+id/title_title"
+                    style="@style/movie_details_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/title_title" />
+
+                <TextView
+                    android:id="@+id/value_title"
+                    style="@style/movie_details_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title_title"
+                    android:text="@{movie.title}" />
+
+                <TextView
+                    android:id="@+id/title_orig_title"
+                    style="@style/movie_details_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/value_title"
+                    android:text="@string/title_original_title" />
+
+                <TextView
+                    android:id="@+id/value_orig_title"
+                    style="@style/movie_details_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title_orig_title"
+                    android:text="@{movie.originalTitle}" />
+
+                <TextView
+                    android:id="@+id/title_overview"
+                    style="@style/movie_details_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/value_orig_title"
+                    android:text="@string/title_overview" />
+
+                <TextView
+                    android:id="@+id/value_overview"
+                    style="@style/movie_details_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title_overview"
+                    android:text="@{movie.overview}" />
+
+                <TextView
+                    android:id="@+id/title_date"
+                    style="@style/movie_details_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/value_overview"
+                    android:text="@string/title_release_date" />
+
+                <TextView
+                    android:id="@+id/value_date"
+                    style="@style/movie_details_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title_date"
+                    android:text="@{movie.releaseDate}" />
+
+                <TextView
+                    android:id="@+id/title_popularity"
+                    style="@style/movie_details_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/value_date"
+                    android:text="@string/title_popularity" />
+
+                <TextView
+                    android:id="@+id/value_popularity"
+                    style="@style/movie_details_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title_popularity"
+                    android:text="@{movie.popularity.toString()}" />
+
+                <TextView
+                    android:id="@+id/title_vote_avg"
+                    style="@style/movie_details_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/value_popularity"
+                    android:text="@string/title_vote_avg" />
+
+                <TextView
+                    android:id="@+id/value_vote_avg"
+                    style="@style/movie_details_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title_vote_avg"
+                    android:text="@{movie.voteAverage.toString()}" />
+
+                <TextView
+                    android:id="@+id/title_adult"
+                    style="@style/movie_details_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/value_vote_avg"
+                    android:text="@string/title_adult_film" />
+
+                <TextView
+                    android:id="@+id/value_adult"
+                    style="@style/movie_details_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title_adult"
+                    android:text="" />
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+</layout>
