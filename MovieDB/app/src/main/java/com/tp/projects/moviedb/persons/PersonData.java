@@ -376,7 +376,7 @@ public class PersonData implements Serializable {
     }
 
     public void setImageURLs() {
-        profilePath = NetworkHandler.createTileImageURL(profilePath);
+        profilePath = NetworkHandler.getInstance().createTileImageURL(profilePath);
     }
 
 }

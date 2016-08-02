@@ -40,7 +40,7 @@ public class PersonsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ctx = getActivity();
-        NetworkHandler.downloadPersonsData(ctx, createPersonDBResponseHandler());
+        NetworkHandler.getInstance().downloadPersonsData(ctx, createPersonDBResponseHandler());
     }
 
 
@@ -58,7 +58,7 @@ public class PersonsFragment extends Fragment {
             public void onCompleted(Exception e, JsonObject result) {
                 if (e == null) {
                     if (result.get("status_code") != null) {
-                        MainActivity.getInstace().setNetworkErrorFragmentVisible(result.get("status_code").getAsString(), result.get("status_message").getAsString());
+                        MainActivity.getInstance().setNetworkErrorFragmentVisible(result.get("status_code").getAsString(), result.get("status_message").getAsString());
                     } else {
                         parsePersonJSONData(result);
                         initializeTileLayout();

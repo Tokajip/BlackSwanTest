@@ -41,7 +41,7 @@ public class TVShowFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ctx = getActivity();
-        NetworkHandler.downloadTvShowData(ctx, cretateTvShowDBResponseHandler());
+        NetworkHandler.getInstance().downloadTvShowData(ctx, cretateTvShowDBResponseHandler());
     }
 
     @Override
@@ -58,7 +58,7 @@ public class TVShowFragment extends Fragment {
             public void onCompleted(Exception e, JsonObject result) {
                 if (e == null) {
                     if (result.get("status_code") != null) {
-                        MainActivity.getInstace().setNetworkErrorFragmentVisible(result.get("status_code").getAsString(), result.get("status_message").getAsString());
+                        MainActivity.getInstance().setNetworkErrorFragmentVisible(result.get("status_code").getAsString(), result.get("status_message").getAsString());
                     } else {
                         parseTVShowJSONData(result);
                         initializeTileLayout();

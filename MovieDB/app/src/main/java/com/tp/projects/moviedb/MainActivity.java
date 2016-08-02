@@ -17,8 +17,13 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.tp.projects.moviedb.movies.MovieFragment;
 import com.tp.projects.moviedb.persons.PersonsFragment;
 import com.tp.projects.moviedb.tvshows.TVShowFragment;
+import com.tp.projects.moviedb.util.MovieDBNetworkService;
 import com.tp.projects.moviedb.util.NetworkErrorFragment;
+import com.tp.projects.moviedb.util.NetworkHandler;
 import com.tp.projects.moviedb.util.OfflineFragment;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -39,6 +44,11 @@ public class MainActivity extends AppCompatActivity
 
         ctx = this;
         mainActivityRunningInstance = this;
+
+        Retrofit retrofit1 = new Retrofit.Builder().baseUrl(ctx.getString(R.string.base_url)).addConverterFactory(GsonConverterFactory.create()).build();
+        NetworkHandler.getInstance().setRetrofit(retrofit1);
+        MovieDBNetworkService service1 = retrofit1.create(MovieDBNetworkService.class);
+        NetworkHandler.getInstance().setService(service1);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -150,7 +160,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    public static MainActivity getInstace() {
+    public static MainActivity getInstance() {
         return mainActivityRunningInstance;
     }
 

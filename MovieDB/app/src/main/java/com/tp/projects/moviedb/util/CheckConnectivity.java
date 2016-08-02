@@ -18,12 +18,12 @@ public class CheckConnectivity extends BroadcastReceiver {
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
-            if (MainActivity.getInstace() != null) {
-                MainActivity.getInstace().restart();
+            if (MainActivity.getInstance() != null) {
+                MainActivity.getInstance().restart();
             }
         } else {
-            if (MainActivity.getInstace() != null) {
-                MainActivity.getInstace().setOfflineFragmentVisible();
+            if (MainActivity.getInstance() != null) {
+                MainActivity.getInstance().setOfflineFragmentVisible();
             }
         }
     }

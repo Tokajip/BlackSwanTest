@@ -24,6 +24,10 @@ import com.tp.projects.moviedb.util.NetworkHandler;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -43,7 +47,21 @@ public class MovieFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ctx = getActivity();
-        NetworkHandler.downloadMovieData(ctx, cretateMovieDBResponseHandler());
+
+        Call<JsonElement> call = NetworkHandler.getInstance().downloadMovieDataRetrofit();
+
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                parseMovieJSONData(response.body().getAsJsonObject());
+                initializeTileLayout();
+            }
+
+            @Override
+            public void onFailure(Call<JsonElement> call, Throwable t) {
+                String test = call.request().toString();
+            }
+        });
 
 
     }
@@ -56,16 +74,17 @@ public class MovieFragment extends Fragment {
     }
 
 
-    private FutureCallback<JsonObject> cretateMovieDBResponseHandler() {
+
+    private FutureCallback<JsonObject> createMovieDBResponseHandler() {
         return new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
                 if (e == null) {
                     if (result.get("status_code") != null) {
-                        MainActivity.getInstace().setNetworkErrorFragmentVisible(result.get("status_code").getAsString(), result.get("status_message").getAsString());
+                        MainActivity.getInstance().setNetworkErrorFragmentVisible(result.get("status_code").getAsString(), result.get("status_message").getAsString());
                     } else {
                         parseMovieJSONData(result);
-                        initializeTileLayout(e);
+                        initializeTileLayout();
                     }
 
                 }
@@ -85,7 +104,7 @@ public class MovieFragment extends Fragment {
         }
     }
 
-    private void initializeTileLayout(Exception e) {
+    private void initializeTileLayout() {
         recyclerView = (RecyclerView) mainView.findViewById(R.id.tiles_container);
         if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);

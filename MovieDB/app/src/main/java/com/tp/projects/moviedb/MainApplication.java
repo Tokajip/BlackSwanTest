@@ -16,12 +16,12 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        NetworkHandler.initialize(this);
-        NetworkHandler.downloadConfig(this, new FutureCallback<JsonObject>() {
+        NetworkHandler.getInstance().initialize(this);
+        NetworkHandler.getInstance().downloadConfig(this, new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
                 if (e == null && result.get("status_code") == null)
-                    NetworkHandler.initializeMovieDB(result.get("images").getAsJsonObject().get("base_url").getAsString());
+                    NetworkHandler.getInstance().initializeMovieDB(result.get("images").getAsJsonObject().get("base_url").getAsString());
             }
         });
     }
