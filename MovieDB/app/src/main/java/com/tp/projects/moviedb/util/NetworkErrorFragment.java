@@ -39,7 +39,7 @@ public class NetworkErrorFragment extends Fragment {
      * @param errorCode Parameter 2.
      * @return A new instance of fragment NetworkErrorFragment.
      */
-    public static NetworkErrorFragment newInstance(String errorText, String errorCode) {
+    public static NetworkErrorFragment newInstance(String errorCode, String errorText) {
         NetworkErrorFragment fragment = new NetworkErrorFragment();
         Bundle args = new Bundle();
         args.putString(ERROR_TEXT, errorText);

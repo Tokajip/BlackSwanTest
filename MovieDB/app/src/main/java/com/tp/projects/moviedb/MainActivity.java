@@ -45,12 +45,6 @@ public class MainActivity extends AppCompatActivity
         ctx = this;
         mainActivityRunningInstance = this;
 
-        Retrofit retrofit1 = new Retrofit.Builder().baseUrl(ctx.getString(R.string.base_url)).addConverterFactory(GsonConverterFactory.create()).build();
-        NetworkHandler.getInstance().setRetrofit(retrofit1);
-        MovieDBNetworkService service1 = retrofit1.create(MovieDBNetworkService.class);
-        NetworkHandler.getInstance().setService(service1);
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

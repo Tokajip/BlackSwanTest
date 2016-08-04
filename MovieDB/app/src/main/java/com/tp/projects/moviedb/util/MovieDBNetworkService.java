@@ -14,4 +14,12 @@ public interface MovieDBNetworkService {
     @GET("movie/popular")
     Call<JsonElement> getMovies(@Query("api_key") String apiKey);
 
+    @GET("tv/popular")
+    Call<JsonElement> getTvShows(@Query("api_key") String apiKey);
+
+    @GET("person/popular")
+    Call<JsonElement> getPesons(@Query("api_key") String apiKey);
+
+    @GET("configuration")
+    Call<JsonElement> getConfig(@Query("api_key") String apiKey);
 }

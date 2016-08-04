@@ -14,10 +14,9 @@ import android.view.ViewGroup;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
-import com.tp.projects.moviedb.MainActivity;
 import com.tp.projects.moviedb.R;
 import com.tp.projects.moviedb.TileAdapter;
+import com.tp.projects.moviedb.util.GeneralRetrofitResponseHandler;
 import com.tp.projects.moviedb.util.JSONParser;
 import com.tp.projects.moviedb.util.NetworkHandler;
 
@@ -25,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -48,21 +46,8 @@ public class MovieFragment extends Fragment {
 
         ctx = getActivity();
 
-        Call<JsonElement> call = NetworkHandler.getInstance().downloadMovieDataRetrofit();
-
-        call.enqueue(new Callback<JsonElement>() {
-            @Override
-            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                parseMovieJSONData(response.body().getAsJsonObject());
-                initializeTileLayout();
-            }
-
-            @Override
-            public void onFailure(Call<JsonElement> call, Throwable t) {
-                String test = call.request().toString();
-            }
-        });
-
+        GeneralRetrofitResponseHandler handler = createMovieDBResponseHandler();
+        NetworkHandler.getInstance().downloadMovieDataRetrofit(handler);
 
     }
 
@@ -74,24 +59,17 @@ public class MovieFragment extends Fragment {
     }
 
 
-
-    private FutureCallback<JsonObject> createMovieDBResponseHandler() {
-        return new FutureCallback<JsonObject>() {
+    private GeneralRetrofitResponseHandler createMovieDBResponseHandler() {
+        return new GeneralRetrofitResponseHandler(getActivity()) {
             @Override
-            public void onCompleted(Exception e, JsonObject result) {
-                if (e == null) {
-                    if (result.get("status_code") != null) {
-                        MainActivity.getInstance().setNetworkErrorFragmentVisible(result.get("status_code").getAsString(), result.get("status_message").getAsString());
-                    } else {
-                        parseMovieJSONData(result);
-                        initializeTileLayout();
-                    }
-
-                }
+            public void responseHandler(Call<JsonElement> mCall, Response<JsonElement> mResponse) {
+                parseMovieJSONData(mResponse.body().getAsJsonObject());
+                initializeTileLayout();
             }
         };
-
     }
+
+
 
 
     private void parseMovieJSONData(JsonObject result) {
