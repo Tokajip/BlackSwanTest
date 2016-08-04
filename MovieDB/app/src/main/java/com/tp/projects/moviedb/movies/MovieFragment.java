@@ -14,15 +14,17 @@ import android.view.ViewGroup;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
-import com.tp.projects.moviedb.MainActivity;
 import com.tp.projects.moviedb.R;
 import com.tp.projects.moviedb.TileAdapter;
+import com.tp.projects.moviedb.util.GeneralRetrofitResponseHandler;
 import com.tp.projects.moviedb.util.JSONParser;
 import com.tp.projects.moviedb.util.NetworkHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,8 +45,9 @@ public class MovieFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ctx = getActivity();
-        NetworkHandler.downloadMovieData(ctx, cretateMovieDBResponseHandler());
 
+        GeneralRetrofitResponseHandler handler = createMovieDBResponseHandler();
+        NetworkHandler.getInstance().downloadMovieDataRetrofit(handler);
 
     }
 
@@ -56,23 +59,17 @@ public class MovieFragment extends Fragment {
     }
 
 
-    private FutureCallback<JsonObject> cretateMovieDBResponseHandler() {
-        return new FutureCallback<JsonObject>() {
+    private GeneralRetrofitResponseHandler createMovieDBResponseHandler() {
+        return new GeneralRetrofitResponseHandler(getActivity()) {
             @Override
-            public void onCompleted(Exception e, JsonObject result) {
-                if (e == null) {
-                    if (result.get("status_code") != null) {
-                        MainActivity.getInstace().setNetworkErrorFragmentVisible(result.get("status_code").getAsString(), result.get("status_message").getAsString());
-                    } else {
-                        parseMovieJSONData(result);
-                        initializeTileLayout(e);
-                    }
-
-                }
+            public void responseHandler(Call<JsonElement> mCall, Response<JsonElement> mResponse) {
+                parseMovieJSONData(mResponse.body().getAsJsonObject());
+                initializeTileLayout();
             }
         };
-
     }
+
+
 
 
     private void parseMovieJSONData(JsonObject result) {
@@ -85,7 +82,7 @@ public class MovieFragment extends Fragment {
         }
     }
 
-    private void initializeTileLayout(Exception e) {
+    private void initializeTileLayout() {
         recyclerView = (RecyclerView) mainView.findViewById(R.id.tiles_container);
         if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);

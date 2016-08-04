@@ -17,11 +17,16 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.tp.projects.moviedb.MainActivity;
 import com.tp.projects.moviedb.R;
+import com.tp.projects.moviedb.util.GeneralRetrofitResponseHandler;
 import com.tp.projects.moviedb.util.JSONParser;
 import com.tp.projects.moviedb.util.NetworkHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +45,7 @@ public class PersonsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ctx = getActivity();
-        NetworkHandler.downloadPersonsData(ctx, createPersonDBResponseHandler());
+        NetworkHandler.getInstance().downloadPersonDataRetrofit(createPersonDBResponseHandler());
     }
 
 
@@ -52,21 +57,14 @@ public class PersonsFragment extends Fragment {
     }
 
 
-    private FutureCallback<JsonObject> createPersonDBResponseHandler() {
-        return new FutureCallback<JsonObject>() {
+    private GeneralRetrofitResponseHandler createPersonDBResponseHandler() {
+        return new GeneralRetrofitResponseHandler(getActivity()) {
             @Override
-            public void onCompleted(Exception e, JsonObject result) {
-                if (e == null) {
-                    if (result.get("status_code") != null) {
-                        MainActivity.getInstace().setNetworkErrorFragmentVisible(result.get("status_code").getAsString(), result.get("status_message").getAsString());
-                    } else {
-                        parsePersonJSONData(result);
-                        initializeTileLayout();
-                    }
-                }
+            public void responseHandler(Call<JsonElement> mCall, Response<JsonElement> mResponse) {
+                parsePersonJSONData(mResponse.body().getAsJsonObject());
+                initializeTileLayout();
             }
         };
-
     }
 
 

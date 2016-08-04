@@ -1,80 +1,89 @@
 package com.tp.projects.moviedb.util;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
-import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
+import com.google.gson.JsonElement;
 import com.tp.projects.moviedb.R;
 
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 /**
- * Created by Peti on 2016. 07. 21..
+ * Created by Peti on 2016. 08. 02..
  */
 public class NetworkHandler {
+    private static NetworkHandler ourInstance = new NetworkHandler();
 
-    private static String baseURL;
-    private static String apiKey;
-    private static String imageBaseUrl;
-    private static String tileImageWidth = "w154";
-    private static String headerImageWidth = "w780";
-
-
-    public static String createGETUrl(String path) {
-        return baseURL + path + "?api_key=" + apiKey;
+    public static NetworkHandler getInstance() {
+        return ourInstance;
     }
 
-    public static String createTileImageURL(String path) {
+    private NetworkHandler() {
+    }
+
+    private String baseURL;
+    private String apiKey;
+    private String imageBaseUrl;
+    private String tileImageWidth = "w154";
+    private String headerImageWidth = "w780";
+
+    public Retrofit getRetrofit() {
+        return retrofit;
+    }
+
+    public void setRetrofit(Retrofit retrofit) {
+        this.retrofit = retrofit;
+    }
+
+    public MovieDBNetworkService getService() {
+        return service;
+    }
+
+    public void setService(MovieDBNetworkService service) {
+        this.service = service;
+    }
+
+    private Retrofit retrofit;
+    private MovieDBNetworkService service;
+
+    
+    public String createTileImageURL(String path) {
         return imageBaseUrl + tileImageWidth + path;
     }
 
-    public static String createHeaderImageURL(String path) {
+    public String createHeaderImageURL(String path) {
         return imageBaseUrl + headerImageWidth + path;
     }
 
-    public static void initialize(Context context) {
+    public void initialize(Context context) {
         baseURL = context.getString(R.string.base_url);
         apiKey = context.getString(R.string.api_key);
+        retrofit = new Retrofit.Builder().baseUrl(context.getString(R.string.base_url)).addConverterFactory(GsonConverterFactory.create()).build();
+        service = retrofit.create(MovieDBNetworkService.class);
     }
 
-    public static void downloadMovieData(Context ctx, FutureCallback<JsonObject> responseHandler) {
-        Ion.with(ctx)
-                .load(NetworkHandler.createGETUrl("movie/popular"))
-                .asJsonObject()
-                .setCallback(responseHandler);
+
+    public void downloadMovieDataRetrofit(Callback<JsonElement> movieDataResponseHandler) {
+        service.getMovies(apiKey).enqueue(movieDataResponseHandler);
     }
 
-    public static void downloadTvShowData(Context ctx, FutureCallback<JsonObject> tvshowDataResponseHandler) {
-        Ion.with(ctx)
-                .load(NetworkHandler.createGETUrl("tv/popular"))
-                .asJsonObject()
-                .setCallback(tvshowDataResponseHandler);
+    public void downloadTvShowDataRetrofit(Callback<JsonElement> tvshowDataResponseHandler) {
+        service.getTvShows(apiKey).enqueue(tvshowDataResponseHandler);
     }
 
-    public static void downloadPersonsData(Context ctx, FutureCallback<JsonObject> personDataResponseHandler) {
-        Ion.with(ctx)
-                .load(NetworkHandler.createGETUrl("person/popular"))
-                .asJsonObject()
-                .setCallback(personDataResponseHandler);
+    public void downloadPersonDataRetrofit(Callback<JsonElement> personDataResponseHandler) {
+        service.getPesons(apiKey).enqueue(personDataResponseHandler);
     }
 
-    public static void downloadConfig(Context ctx, FutureCallback<JsonObject> responseHandler) {
-        Ion.with(ctx)
-                .load(NetworkHandler.createGETUrl("configuration"))
-                .asJsonObject()
-                .setCallback(responseHandler);
+    public void downloadConfigData(Callback<JsonElement> configDataResponseHandler) {
+        service.getConfig(apiKey).enqueue(configDataResponseHandler);
     }
 
-    public static void initializeMovieDB(String url) {
+
+    public void initializeMovieDB(String url) {
         imageBaseUrl = url;
     }
 
-    public static boolean isOnline(Context ctx) {
-        ConnectivityManager cm =
-                (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
 
 }

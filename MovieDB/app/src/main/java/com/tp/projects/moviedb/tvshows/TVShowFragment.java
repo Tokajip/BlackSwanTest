@@ -17,11 +17,15 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.tp.projects.moviedb.MainActivity;
 import com.tp.projects.moviedb.R;
+import com.tp.projects.moviedb.util.GeneralRetrofitResponseHandler;
 import com.tp.projects.moviedb.util.JSONParser;
 import com.tp.projects.moviedb.util.NetworkHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,7 +45,7 @@ public class TVShowFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ctx = getActivity();
-        NetworkHandler.downloadTvShowData(ctx, cretateTvShowDBResponseHandler());
+        NetworkHandler.getInstance().downloadTvShowDataRetrofit(cretateTvShowDBResponseHandler());
     }
 
     @Override
@@ -52,21 +56,14 @@ public class TVShowFragment extends Fragment {
     }
 
 
-    private FutureCallback<JsonObject> cretateTvShowDBResponseHandler() {
-        return new FutureCallback<JsonObject>() {
+    private GeneralRetrofitResponseHandler cretateTvShowDBResponseHandler() {
+        return new GeneralRetrofitResponseHandler(getActivity()) {
             @Override
-            public void onCompleted(Exception e, JsonObject result) {
-                if (e == null) {
-                    if (result.get("status_code") != null) {
-                        MainActivity.getInstace().setNetworkErrorFragmentVisible(result.get("status_code").getAsString(), result.get("status_message").getAsString());
-                    } else {
-                        parseTVShowJSONData(result);
-                        initializeTileLayout();
-                    }
-                }
+            public void responseHandler(Call<JsonElement> mCall, Response<JsonElement> mResponse) {
+                parseTVShowJSONData(mResponse.body().getAsJsonObject());
+                initializeTileLayout();
             }
         };
-
     }
 
 
