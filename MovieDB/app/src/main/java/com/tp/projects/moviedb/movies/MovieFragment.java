@@ -45,9 +45,7 @@ public class MovieFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ctx = getActivity();
-
-        GeneralRetrofitResponseHandler handler = createMovieDBResponseHandler();
-        NetworkHandler.getInstance().downloadMovieDataRetrofit(handler);
+        NetworkHandler.getInstance().downloadMovieDataRetrofit(createMovieDBResponseHandler());
 
     }
 

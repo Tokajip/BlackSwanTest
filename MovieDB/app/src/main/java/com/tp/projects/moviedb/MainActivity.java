@@ -17,13 +17,8 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.tp.projects.moviedb.movies.MovieFragment;
 import com.tp.projects.moviedb.persons.PersonsFragment;
 import com.tp.projects.moviedb.tvshows.TVShowFragment;
-import com.tp.projects.moviedb.util.MovieDBNetworkService;
 import com.tp.projects.moviedb.util.NetworkErrorFragment;
-import com.tp.projects.moviedb.util.NetworkHandler;
 import com.tp.projects.moviedb.util.OfflineFragment;
-
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,7 +38,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         ctx = this;
-        mainActivityRunningInstance = this;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -165,5 +159,17 @@ public class MainActivity extends AppCompatActivity
                 transaction.replace(R.id.fragment, new MovieFragment()).commit();
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mainActivityRunningInstance = null;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mainActivityRunningInstance = this;
     }
 }

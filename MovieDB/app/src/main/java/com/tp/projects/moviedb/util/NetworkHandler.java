@@ -64,19 +64,19 @@ public class NetworkHandler {
     }
 
 
-    public void downloadMovieDataRetrofit(Callback<JsonElement> movieDataResponseHandler) {
+    public void downloadMovieDataRetrofit(GeneralRetrofitResponseHandler movieDataResponseHandler) {
         service.getMovies(apiKey).enqueue(movieDataResponseHandler);
     }
 
-    public void downloadTvShowDataRetrofit(Callback<JsonElement> tvshowDataResponseHandler) {
+    public void downloadTvShowDataRetrofit(GeneralRetrofitResponseHandler tvshowDataResponseHandler) {
         service.getTvShows(apiKey).enqueue(tvshowDataResponseHandler);
     }
 
-    public void downloadPersonDataRetrofit(Callback<JsonElement> personDataResponseHandler) {
+    public void downloadPersonDataRetrofit(GeneralRetrofitResponseHandler personDataResponseHandler) {
         service.getPesons(apiKey).enqueue(personDataResponseHandler);
     }
 
-    public void downloadConfigData(Callback<JsonElement> configDataResponseHandler) {
+    public void downloadConfigData(GeneralRetrofitResponseHandler configDataResponseHandler) {
         service.getConfig(apiKey).enqueue(configDataResponseHandler);
     }
 
