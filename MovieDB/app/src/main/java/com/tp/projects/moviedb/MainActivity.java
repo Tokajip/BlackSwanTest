@@ -2,6 +2,8 @@ package com.tp.projects.moviedb;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -9,26 +11,38 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.Wearable;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.tp.projects.moviedb.movies.MovieFragment;
 import com.tp.projects.moviedb.persons.PersonsFragment;
 import com.tp.projects.moviedb.tvshows.TVShowFragment;
 import com.tp.projects.moviedb.util.NetworkErrorFragment;
 import com.tp.projects.moviedb.util.OfflineFragment;
+import com.tp.projects.moviedb.util.SyncDataWear;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MaterialSearchView.OnQueryTextListener, MaterialSearchView.SearchViewListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
+    private static final String TAG = "MainActivity";
     private MaterialSearchView searchView;
     private MenuItem searchIcon;
     static Context ctx;
-
+    private GoogleApiClient googleApiClient;
 
     private static MainActivity mainActivityRunningInstance;
+    private List<String> testList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,39 +61,31 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+ 
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.fragment, new MovieFragment());
             transaction.commit();
         }
+        setSearchView();
+        setWearDataSync();
 
+    }
+
+    private void setWearDataSync() {
+        googleApiClient = new GoogleApiClient.Builder(this).
+                addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Wearable.API)
+                .build();
+
+        googleApiClient.connect();
+    }
+
+    private void setSearchView() {
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                MovieFragment.setSearchedLayout(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-                searchView.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                searchView.setVisibility(View.GONE);
-
-            }
-        });
+        searchView.setOnQueryTextListener(this);
+        searchView.setOnSearchViewListener(this);
     }
 
 
@@ -91,6 +97,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+        testList.add("test");
     }
 
 
@@ -100,7 +107,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction = getSupportFragmentManager().beginTransaction();
-
 
         if (id == R.id.drawer_movie) {
             transaction.replace(R.id.fragment, new MovieFragment());
@@ -171,5 +177,46 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         mainActivityRunningInstance = this;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        MovieFragment.setSearchedLayout(query);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
+    @Override
+    public void onSearchViewShown() {
+        searchView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onSearchViewClosed() {
+        searchView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Log.d(TAG, "onConnected: " + (bundle != null ? bundle : ""));
+        testList = new ArrayList<>();
+        testList.add("test1");
+        testList.add("test2");
+        testList.add("test3");
+        new SyncDataWear(googleApiClient).execute(testList);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.d(TAG, "onConnectionSuspended: " + i);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed: " + connectionResult);
     }
 }
