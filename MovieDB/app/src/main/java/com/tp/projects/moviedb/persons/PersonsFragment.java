@@ -27,6 +27,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +47,10 @@ public class PersonsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ctx = getActivity();
-        NetworkHandler.getInstance().downloadPersonDataRetrofit(createPersonDBResponseHandler());
+        NetworkHandler.getInstance().downloadPersonDataRetrofit()
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe(createPersonDBResponseHandler());
     }
 
 
@@ -60,10 +65,11 @@ public class PersonsFragment extends Fragment {
     private GeneralRetrofitResponseHandler createPersonDBResponseHandler() {
         return new GeneralRetrofitResponseHandler(getActivity()) {
             @Override
-            public void responseHandler(Call<JsonElement> mCall, Response<JsonElement> mResponse) {
-                parsePersonJSONData(mResponse.body().getAsJsonObject());
+            public void responseHandler(JsonElement jsonElement) {
+                parsePersonJSONData(jsonElement.getAsJsonObject());
                 initializeTileLayout();
             }
+
         };
     }
 

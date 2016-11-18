@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import rx.Observable;
 
 /**
  * Created by Peti on 2016. 08. 02..
@@ -12,14 +13,14 @@ import retrofit2.http.Query;
 public interface MovieDBNetworkService {
 
     @GET("movie/popular")
-    Call<JsonElement> getMovies(@Query("api_key") String apiKey);
+    Observable<JsonElement> getMovies(@Query("api_key") String apiKey);
 
     @GET("tv/popular")
-    Call<JsonElement> getTvShows(@Query("api_key") String apiKey);
+    Observable<JsonElement> getTvShows(@Query("api_key") String apiKey);
 
     @GET("person/popular")
-    Call<JsonElement> getPesons(@Query("api_key") String apiKey);
+    Observable<JsonElement> getPesons(@Query("api_key") String apiKey);
 
     @GET("configuration")
-    Call<JsonElement> getConfig(@Query("api_key") String apiKey);
+    Observable<JsonElement> getConfig(@Query("api_key") String apiKey);
 }

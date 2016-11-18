@@ -26,6 +26,8 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +47,10 @@ public class TVShowFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ctx = getActivity();
-        NetworkHandler.getInstance().downloadTvShowDataRetrofit(cretateTvShowDBResponseHandler());
+        NetworkHandler.getInstance().downloadTvShowDataRetrofit()
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe(cretateTvShowDBResponseHandler());;
     }
 
     @Override
@@ -59,8 +64,8 @@ public class TVShowFragment extends Fragment {
     private GeneralRetrofitResponseHandler cretateTvShowDBResponseHandler() {
         return new GeneralRetrofitResponseHandler(getActivity()) {
             @Override
-            public void responseHandler(Call<JsonElement> mCall, Response<JsonElement> mResponse) {
-                parseTVShowJSONData(mResponse.body().getAsJsonObject());
+            public void responseHandler(JsonElement jsonElement) {
+                parseTVShowJSONData(jsonElement.getAsJsonObject());
                 initializeTileLayout();
             }
         };

@@ -3,16 +3,11 @@ package com.tp.projects.moviedb;
 import android.app.Application;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
 import com.tp.projects.moviedb.util.GeneralRetrofitResponseHandler;
-import com.tp.projects.moviedb.util.MovieDBNetworkService;
 import com.tp.projects.moviedb.util.NetworkHandler;
 
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Peti on 2016. 07. 21..
@@ -20,16 +15,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainApplication extends Application {
 
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+  @Override
+  public void onCreate() {
+    super.onCreate();
 
-        NetworkHandler.getInstance().initialize(this);
-        NetworkHandler.getInstance().downloadConfigData(new GeneralRetrofitResponseHandler(MainActivity.getInstance()) {
-            @Override
-            public void responseHandler(Call<JsonElement> mCall, Response<JsonElement> mResponse) {
-                NetworkHandler.getInstance().initializeMovieDB(mResponse.body().getAsJsonObject().get("images").getAsJsonObject().get("base_url").getAsString());
-            }
-        });
-    }
+    NetworkHandler.getInstance().initialize(this);
+    NetworkHandler.getInstance().downloadConfigData()
+      .subscribeOn(Schedulers.io())
+      .observeOn(AndroidSchedulers.mainThread())
+      .subscribe(new GeneralRetrofitResponseHandler(MainActivity.getInstance()) {
+        @Override
+        public void responseHandler(JsonElement jsonElement) {
+          NetworkHandler.getInstance().initializeMovieDB(jsonElement.getAsJsonObject().get("images").getAsJsonObject().get("base_url").getAsString());
+        }
+      });
+  }
 }
