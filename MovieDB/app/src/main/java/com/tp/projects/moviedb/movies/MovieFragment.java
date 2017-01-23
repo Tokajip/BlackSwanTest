@@ -18,10 +18,14 @@ import com.tp.projects.moviedb.R;
 import com.tp.projects.moviedb.TileAdapter;
 import com.tp.projects.moviedb.util.GeneralRetrofitResponseHandler;
 import com.tp.projects.moviedb.util.JSONParser;
+import com.tp.projects.moviedb.util.MovieDBComponent;
+import com.tp.projects.moviedb.util.MovieDBComponentInjector;
 import com.tp.projects.moviedb.util.NetworkHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -34,6 +38,7 @@ import rx.schedulers.Schedulers;
  */
 public class MovieFragment extends Fragment {
 
+  @Inject NetworkHandler networkHnadler;
   private static Context ctx;
   private static List<MovieData> movieList;
   private static List<MovieData> searchedList;
@@ -46,9 +51,9 @@ public class MovieFragment extends Fragment {
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
+    MovieDBComponentInjector.instance().inject(this);
     ctx = getActivity();
-    NetworkHandler.getInstance().downloadMovieDataRetrofit()
+    networkHnadler.downloadMovieDataRetrofit()
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())
       .subscribe(createMovieDBResponseHandler());
@@ -79,7 +84,7 @@ public class MovieFragment extends Fragment {
     JsonArray jsonList = result.getAsJsonArray("results");
     for (JsonElement showJSON : jsonList) {
       MovieData movie = (MovieData) JSONParser.returnParsedClass(showJSON, MovieData.class);
-      movie.setImageURLs();
+      setImageURLs(movie);
       movieList.add(movie);
     }
   }
@@ -102,6 +107,10 @@ public class MovieFragment extends Fragment {
       }
     }
     recyclerView.setAdapter(new TileAdapter(ctx, searchedList));
+  }
 
+  public void setImageURLs(MovieData movie) {
+    movie.setPosterPath(networkHnadler.createTileImageURL(movie.getPosterPath()));
+    movie.setBackdropPath(networkHnadler.createHeaderImageURL(movie.getBackdropPath()));
   }
 }

@@ -14,18 +14,17 @@ import android.view.ViewGroup;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
-import com.tp.projects.moviedb.MainActivity;
 import com.tp.projects.moviedb.R;
 import com.tp.projects.moviedb.util.GeneralRetrofitResponseHandler;
 import com.tp.projects.moviedb.util.JSONParser;
+import com.tp.projects.moviedb.util.MovieDBComponentInjector;
 import com.tp.projects.moviedb.util.NetworkHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Response;
+import javax.inject.Inject;
+
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -34,8 +33,10 @@ import rx.schedulers.Schedulers;
  */
 public class TVShowFragment extends Fragment {
 
+    @Inject NetworkHandler networkHandler;
+
     private Context ctx;
-    private List<TVShowData> tvshowList;
+    private List<TVShowData> tvShowList;
     private View mainView;
 
     public TVShowFragment() {
@@ -45,12 +46,13 @@ public class TVShowFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MovieDBComponentInjector.instance().inject(this);
 
         ctx = getActivity();
-        NetworkHandler.getInstance().downloadTvShowDataRetrofit()
+        networkHandler.downloadTvShowDataRetrofit()
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
-          .subscribe(cretateTvShowDBResponseHandler());;
+          .subscribe(cretateTvShowDBResponseHandler());
     }
 
     @Override
@@ -73,12 +75,12 @@ public class TVShowFragment extends Fragment {
 
 
     private void parseTVShowJSONData(JsonObject result) {
-        tvshowList = new ArrayList<>();
+        tvShowList = new ArrayList<>();
         JsonArray jsonList = result.getAsJsonArray("results");
         for (JsonElement movieJSON : jsonList) {
             TVShowData show = (TVShowData) JSONParser.returnParsedClass(movieJSON, TVShowData.class);
-            show.setImageURLs();
-            tvshowList.add(show);
+            setImageURLs(show);
+            tvShowList.add(show);
         }
     }
 
@@ -87,9 +89,12 @@ public class TVShowFragment extends Fragment {
         if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-            recyclerView.setAdapter(new TVShowTilesAdapter(ctx, tvshowList));
+            recyclerView.setAdapter(new TVShowTilesAdapter(ctx, tvShowList));
         }
     }
 
-
+    public void setImageURLs(TVShowData show) {
+        show.setPosterPath(networkHandler.createTileImageURL(show.getPosterPath()));
+        show.setBackdropPath(networkHandler.createHeaderImageURL(show.getBackdropPath()));
+    }
 }

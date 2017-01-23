@@ -234,9 +234,4 @@ public class TVShowData implements Serializable {
     public void setOriginalName(String originalName) {
         this.originalName = originalName;
     }
-
-    public void setImageURLs() {
-        posterPath = NetworkHandler.getInstance().createTileImageURL(posterPath);
-        backdropPath = NetworkHandler.getInstance().createHeaderImageURL(backdropPath);
-    }
 }

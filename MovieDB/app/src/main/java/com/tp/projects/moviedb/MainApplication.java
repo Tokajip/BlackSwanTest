@@ -4,8 +4,12 @@ import android.app.Application;
 
 import com.google.gson.JsonElement;
 import com.tp.projects.moviedb.util.GeneralRetrofitResponseHandler;
+import com.tp.projects.moviedb.util.MovieDBComponentInjector;
 import com.tp.projects.moviedb.util.NetworkHandler;
 
+import javax.inject.Inject;
+
+import retrofit2.Retrofit;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -14,19 +18,20 @@ import rx.schedulers.Schedulers;
  */
 public class MainApplication extends Application {
 
+  @Inject NetworkHandler networkHandler;
 
   @Override
   public void onCreate() {
     super.onCreate();
+    MovieDBComponentInjector.instance().inject(this);
 
-    NetworkHandler.getInstance().initialize(this);
-    NetworkHandler.getInstance().downloadConfigData()
+    networkHandler.downloadConfigData()
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())
       .subscribe(new GeneralRetrofitResponseHandler(MainActivity.getInstance()) {
         @Override
         public void responseHandler(JsonElement jsonElement) {
-          NetworkHandler.getInstance().initializeMovieDB(jsonElement.getAsJsonObject().get("images").getAsJsonObject().get("base_url").getAsString());
+          networkHandler.initializeMovieDB(jsonElement.getAsJsonObject().get("images").getAsJsonObject().get("base_url").getAsString());
         }
       });
   }

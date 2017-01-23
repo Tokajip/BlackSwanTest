@@ -252,9 +252,4 @@ public class MovieData implements Serializable {
     public void setVoteAverage(Double voteAverage) {
         this.voteAverage = voteAverage;
     }
-
-    public void setImageURLs() {
-        posterPath = NetworkHandler.getInstance().createTileImageURL(posterPath);
-        backdropPath = NetworkHandler.getInstance().createHeaderImageURL(backdropPath);
-    }
 }

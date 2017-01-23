@@ -63,7 +63,7 @@ public class TileAdapter extends RecyclerView.Adapter<TileAdapter.Viewholder> {
         return list.size();
     }
 
-    public class Viewholder extends RecyclerView.ViewHolder {
+    class Viewholder extends RecyclerView.ViewHolder {
 
         View view;
         TileLayoutNewBinding binding;

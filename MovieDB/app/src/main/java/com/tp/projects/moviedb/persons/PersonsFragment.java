@@ -19,10 +19,13 @@ import com.tp.projects.moviedb.MainActivity;
 import com.tp.projects.moviedb.R;
 import com.tp.projects.moviedb.util.GeneralRetrofitResponseHandler;
 import com.tp.projects.moviedb.util.JSONParser;
+import com.tp.projects.moviedb.util.MovieDBComponentInjector;
 import com.tp.projects.moviedb.util.NetworkHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +38,8 @@ import rx.schedulers.Schedulers;
  */
 public class PersonsFragment extends Fragment {
 
+    @Inject NetworkHandler networkHandler;
+
     private Context ctx;
     private List<PersonData> personList;
     private View mainView;
@@ -45,9 +50,10 @@ public class PersonsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MovieDBComponentInjector.instance().inject(this);
 
         ctx = getActivity();
-        NetworkHandler.getInstance().downloadPersonDataRetrofit()
+        networkHandler.downloadPersonDataRetrofit()
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
           .subscribe(createPersonDBResponseHandler());
@@ -79,7 +85,7 @@ public class PersonsFragment extends Fragment {
         JsonArray jsonList = result.getAsJsonArray("results");
         for (JsonElement personJSON : jsonList) {
             PersonData person = (PersonData) JSONParser.returnParsedClass(personJSON, PersonData.class);
-            person.setImageURLs();
+            person.setProfilePath(networkHandler.createTileImageURL(person.getProfilePath()));
             personList.add(person);
         }
     }

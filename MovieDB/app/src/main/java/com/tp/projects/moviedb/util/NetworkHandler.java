@@ -5,49 +5,33 @@ import android.content.Context;
 import com.google.gson.JsonElement;
 import com.tp.projects.moviedb.R;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
  * Created by Peti on 2016. 08. 02..
  */
+@Singleton
 public class NetworkHandler {
-  private static NetworkHandler ourInstance = new NetworkHandler();
 
-  public static NetworkHandler getInstance() {
-    return ourInstance;
+  @Inject
+  NetworkHandler(Retrofit retrofit) {
+    service = retrofit.create(MovieDBNetworkService.class);
+    apiKey = "0a08e38b874d0aa2d426ffc04357069d";
+    MovieDBComponentInjector.instance().inject(this);
   }
 
-  private NetworkHandler() {
-  }
-
-  private String baseURL;
   private String apiKey;
-  private String imageBaseUrl;
+  private static String imageBaseUrl;
   private String tileImageWidth = "w154";
   private String headerImageWidth = "w780";
 
-  public Retrofit getRetrofit() {
-    return retrofit;
-  }
-
-  public void setRetrofit(Retrofit retrofit) {
-    this.retrofit = retrofit;
-  }
-
-  public MovieDBNetworkService getService() {
-    return service;
-  }
-
-  public void setService(MovieDBNetworkService service) {
-    this.service = service;
-  }
-
-  private Retrofit retrofit;
   private MovieDBNetworkService service;
-
 
   public String createTileImageURL(String path) {
     return imageBaseUrl + tileImageWidth + path;
@@ -55,17 +39,6 @@ public class NetworkHandler {
 
   public String createHeaderImageURL(String path) {
     return imageBaseUrl + headerImageWidth + path;
-  }
-
-  public void initialize(Context context) {
-    baseURL = context.getString(R.string.base_url);
-    apiKey = context.getString(R.string.api_key);
-    retrofit = new Retrofit.Builder()
-      .baseUrl(context.getString(R.string.base_url))
-      .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-      .addConverterFactory(GsonConverterFactory.create())
-      .build();
-    service = retrofit.create(MovieDBNetworkService.class);
   }
 
 
@@ -90,5 +63,20 @@ public class NetworkHandler {
     imageBaseUrl = url;
   }
 
+
+  interface MovieDBNetworkService {
+
+    @GET("movie/popular")
+    Observable<JsonElement> getMovies(@Query("api_key") String apiKey);
+
+    @GET("tv/popular")
+    Observable<JsonElement> getTvShows(@Query("api_key") String apiKey);
+
+    @GET("person/popular")
+    Observable<JsonElement> getPesons(@Query("api_key") String apiKey);
+
+    @GET("configuration")
+    Observable<JsonElement> getConfig(@Query("api_key") String apiKey);
+  }
 
 }
