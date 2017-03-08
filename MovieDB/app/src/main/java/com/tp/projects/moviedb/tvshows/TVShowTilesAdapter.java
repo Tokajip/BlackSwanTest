@@ -15,40 +15,39 @@ import com.tp.projects.moviedb.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TVShowTilesAdapter extends RecyclerView.Adapter<TVShowTilesAdapter.Viewholder> {
+class TVShowTilesAdapter extends RecyclerView.Adapter<TVShowTilesAdapter.ViewHolder> {
 
-    Context ctx;
-    List<TVShowData> showList;
+    private Context ctx;
+    private List<TVShowData> showList;
 
 
-    public TVShowTilesAdapter(Context context, List<TVShowData> tvshowList) {
+    TVShowTilesAdapter(Context context, List<TVShowData> tvshowList) {
         ctx = context;
         showList = new ArrayList<>();
         showList.addAll(tvshowList);
     }
 
-    public class Viewholder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
-        View tvshow;
-
-        public Viewholder(View itemView) {
+        View tvShow;
+        ViewHolder(View itemView) {
             super(itemView);
-            tvshow = itemView;
+            tvShow = itemView;
         }
     }
 
     @Override
-    public Viewholder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View tile = LayoutInflater.from(ctx).inflate(R.layout.tile_layout, parent, false);
-        return new Viewholder(tile);
+        return new ViewHolder(tile);
     }
 
     @Override
-    public void onBindViewHolder(Viewholder holder, final int position) {
-        ((TextView) holder.tvshow.findViewById(R.id.tile_title)).setText(showList.get(position).getName());
-        ((TextView) holder.tvshow.findViewById(R.id.tile_popularity)).setText(String.valueOf(showList.get(position).getVoteAverage()));
-        ((TextView) holder.tvshow.findViewById(R.id.tile_description)).setText(showList.get(position).getOverview());
-        holder.tvshow.findViewById(R.id.more_info).setOnClickListener(new View.OnClickListener() {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        ((TextView) holder.tvShow.findViewById(R.id.tile_title)).setText(showList.get(position).getName());
+        ((TextView) holder.tvShow.findViewById(R.id.tile_popularity)).setText(String.valueOf(showList.get(position).getVoteAverage()));
+        ((TextView) holder.tvShow.findViewById(R.id.tile_description)).setText(showList.get(position).getOverview());
+        holder.tvShow.findViewById(R.id.more_info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ctx, TVShowDetailsActivity.class);
@@ -60,7 +59,7 @@ public class TVShowTilesAdapter extends RecyclerView.Adapter<TVShowTilesAdapter.
         Picasso.with(ctx)
                 .load(showList.get(position).getPosterPath())
                 .placeholder(R.mipmap.ic_launcher)
-                .into((ImageView) holder.tvshow.findViewById(R.id.tile_image));
+                .into((ImageView) holder.tvShow.findViewById(R.id.tile_image));
 
     }
 

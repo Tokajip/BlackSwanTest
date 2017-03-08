@@ -20,21 +20,18 @@ import java.util.List;
  */
 public class PersonTilesAdapter extends RecyclerView.Adapter<PersonTilesAdapter.Viewholder> {
 
-    Context ctx;
-    List<PersonData> list;
+    private Context ctx;
+    private List<PersonData> list;
 
-    public PersonTilesAdapter(Context context, List<PersonData> personList) {
+    PersonTilesAdapter(Context context, List<PersonData> personList) {
         ctx = context;
         list = new ArrayList<>();
         list.addAll(personList);
     }
 
-
-    public class Viewholder extends RecyclerView.ViewHolder {
-
+    class Viewholder extends RecyclerView.ViewHolder {
         View tile;
-
-        public Viewholder(View itemView) {
+        Viewholder(View itemView) {
             super(itemView);
             tile = itemView;
         }

@@ -15,10 +15,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.tp.projects.moviedb.R;
-import com.tp.projects.moviedb.TileAdapter;
 import com.tp.projects.moviedb.util.GeneralRetrofitResponseHandler;
 import com.tp.projects.moviedb.util.JSONParser;
-import com.tp.projects.moviedb.util.MovieDBComponent;
 import com.tp.projects.moviedb.util.MovieDBComponentInjector;
 import com.tp.projects.moviedb.util.NetworkHandler;
 
@@ -27,9 +25,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import retrofit2.Call;
-import retrofit2.Response;
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -38,25 +33,47 @@ import rx.schedulers.Schedulers;
  */
 public class MovieFragment extends Fragment {
 
-  @Inject NetworkHandler networkHnadler;
-  private static Context ctx;
+  @Inject
+  NetworkHandler networkHandler;
+  private Context ctx;
   private static List<MovieData> movieList;
-  private static List<MovieData> searchedList;
+  private List<MovieData> searchedList;
   private View mainView;
-  private static RecyclerView recyclerView;
 
   public MovieFragment() {
+    if (getArguments() != null) {
+    String query = getArguments().getString("searchedList");
+      if(query != null) {
+        searchedList = new ArrayList<>();
+        for (MovieData movie : movieList) {
+          if (movie.getTitle().contains(query)) {
+            searchedList.add(movie);
+          }
+        }
+      }
+    }
   }
+
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     MovieDBComponentInjector.instance().inject(this);
     ctx = getActivity();
-    networkHnadler.downloadMovieDataRetrofit()
+    networkHandler.downloadMovieDataRetrofit()
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())
-      .subscribe(createMovieDBResponseHandler());
+      .subscribe(new GeneralRetrofitResponseHandler(getActivity()) {
+        @Override
+        public void onNext(JsonElement jsonElement) {
+          parseMovieJSONData(jsonElement.getAsJsonObject());
+          initializeTileLayout();
+        }
+
+        @Override
+        public void onCompleted() {
+        }
+      });
 
   }
 
@@ -66,18 +83,6 @@ public class MovieFragment extends Fragment {
     mainView = inflater.inflate(R.layout.fragment, container, false);
     return mainView;
   }
-
-
-  private GeneralRetrofitResponseHandler createMovieDBResponseHandler() {
-    return new GeneralRetrofitResponseHandler(getActivity()) {
-      @Override
-      public void responseHandler(JsonElement jsonElement) {
-        parseMovieJSONData(jsonElement.getAsJsonObject());
-        initializeTileLayout();
-      }
-    };
-  }
-
 
   private void parseMovieJSONData(JsonObject result) {
     movieList = new ArrayList<>();
@@ -90,27 +95,20 @@ public class MovieFragment extends Fragment {
   }
 
   private void initializeTileLayout() {
-    recyclerView = (RecyclerView) mainView.findViewById(R.id.tiles_container);
+    RecyclerView recyclerView = (RecyclerView) mainView.findViewById(R.id.tiles_container);
     if (recyclerView != null) {
       recyclerView.setHasFixedSize(true);
       recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-      recyclerView.setAdapter(new MovieTilesAdapter(ctx, movieList));
-    }
-  }
-
-
-  public static void setSearchedLayout(String query) {
-    searchedList = new ArrayList<MovieData>();
-    for (MovieData movie : movieList) {
-      if (movie.getTitle().contains(query)) {
-        searchedList.add(movie);
+      if (searchedList != null) {
+        recyclerView.setAdapter(new MovieTilesAdapter(ctx, searchedList));
+      } else {
+        recyclerView.setAdapter(new MovieTilesAdapter(ctx, movieList));
       }
     }
-    recyclerView.setAdapter(new TileAdapter(ctx, searchedList));
   }
 
   public void setImageURLs(MovieData movie) {
-    movie.setPosterPath(networkHnadler.createTileImageURL(movie.getPosterPath()));
-    movie.setBackdropPath(networkHnadler.createHeaderImageURL(movie.getBackdropPath()));
+    movie.setPosterPath(networkHandler.createTileImageURL(movie.getPosterPath()));
+    movie.setBackdropPath(networkHandler.createHeaderImageURL(movie.getBackdropPath()));
   }
 }

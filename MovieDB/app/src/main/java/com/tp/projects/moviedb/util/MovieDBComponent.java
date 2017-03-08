@@ -14,7 +14,6 @@ import dagger.Component;
 @Component(modules = MovieDBModule.class)
 public interface MovieDBComponent {
 
-  void inject(MainActivity activity);
   void inject(MainApplication application);
   void inject(NetworkHandler handler);
   void inject(MovieFragment movieFragment);

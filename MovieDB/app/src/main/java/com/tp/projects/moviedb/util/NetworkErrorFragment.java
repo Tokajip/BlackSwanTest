@@ -1,7 +1,6 @@
 package com.tp.projects.moviedb.util;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,7 +22,6 @@ public class NetworkErrorFragment extends Fragment {
   private String error_text;
   private String error_code;
 
-  private Context ctx;
   private View mainView;
 
 
@@ -55,19 +53,14 @@ public class NetworkErrorFragment extends Fragment {
       error_text = getArguments().getString(ERROR_TEXT);
       error_code = getArguments().getString(ERROR_CODE);
     }
-    ctx = getActivity();
-
-
   }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-
     mainView = inflater.inflate(R.layout.fragment_network_error, container, false);
     ((TextView) mainView.findViewById(R.id.error_message)).setText(error_text);
     ((TextView) mainView.findViewById(R.id.error_code)).setText("went:" + error_code);
-
     return mainView;
   }
 

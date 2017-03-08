@@ -1,9 +1,6 @@
 package com.tp.projects.moviedb.util;
 
-import android.content.Context;
-
 import com.google.gson.JsonElement;
-import com.tp.projects.moviedb.R;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -51,7 +48,7 @@ public class NetworkHandler {
   }
 
   public Observable<JsonElement> downloadPersonDataRetrofit() {
-    return service.getPesons(apiKey);
+    return service.getPersons(apiKey);
   }
 
   public Observable<JsonElement> downloadConfigData() {
@@ -73,7 +70,7 @@ public class NetworkHandler {
     Observable<JsonElement> getTvShows(@Query("api_key") String apiKey);
 
     @GET("person/popular")
-    Observable<JsonElement> getPesons(@Query("api_key") String apiKey);
+    Observable<JsonElement> getPersons(@Query("api_key") String apiKey);
 
     @GET("configuration")
     Observable<JsonElement> getConfig(@Query("api_key") String apiKey);

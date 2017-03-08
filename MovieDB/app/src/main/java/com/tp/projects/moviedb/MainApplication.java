@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import retrofit2.Retrofit;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -28,9 +29,9 @@ public class MainApplication extends Application {
     networkHandler.downloadConfigData()
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())
-      .subscribe(new GeneralRetrofitResponseHandler(MainActivity.getInstance()) {
+      .subscribe(new Action1<JsonElement>() {
         @Override
-        public void responseHandler(JsonElement jsonElement) {
+        public void call(JsonElement jsonElement) {
           networkHandler.initializeMovieDB(jsonElement.getAsJsonObject().get("images").getAsJsonObject().get("base_url").getAsString());
         }
       });

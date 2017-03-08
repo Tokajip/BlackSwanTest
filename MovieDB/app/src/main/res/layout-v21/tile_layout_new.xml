@@ -40,8 +40,7 @@
                     android:layout_centerHorizontal="true"
                     android:textColor="@android:color/white"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:text="@{item.title}" />
+                    android:textStyle="bold" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>

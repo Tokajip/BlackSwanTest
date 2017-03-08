@@ -18,22 +18,20 @@ import java.util.List;
 /**
  * Created by Tokaji Peter on 21/07/16.
  */
-public class MovieTilesAdapter extends RecyclerView.Adapter<MovieTilesAdapter.Viewholder> {
+class MovieTilesAdapter extends RecyclerView.Adapter<MovieTilesAdapter.Viewholder> {
 
-    public static class Viewholder extends RecyclerView.ViewHolder {
-
+    static class Viewholder extends RecyclerView.ViewHolder {
         View tile;
-
-        public Viewholder(View itemView) {
+        Viewholder(View itemView) {
             super(itemView);
             tile = itemView;
         }
     }
 
-    Context ctx;
-    List<MovieData> movieList;
+    private Context ctx;
+    private List<MovieData> movieList;
 
-    public MovieTilesAdapter(Context context, List<MovieData> movieDatas) {
+    MovieTilesAdapter(Context context, List<MovieData> movieDatas) {
         ctx = context;
         movieList = new ArrayList<>();
         movieList.addAll(movieDatas);
